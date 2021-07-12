@@ -1,6 +1,12 @@
 import * as React from "react";
-import { Button } from "@material-ui/core";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { KeyboardController } from "./KeyboardController/KeyboardController";
 
 export default function App() {
-  return <Button>Hello World!</Button>;
+  return (
+    <>
+      <CssBaseline />
+      <KeyboardController></KeyboardController>
+    </>
+  );
 }
