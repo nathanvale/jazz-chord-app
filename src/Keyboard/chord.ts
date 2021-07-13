@@ -26,6 +26,13 @@ export class Chord {
     return this._notes;
   }
 
+  transpose(interval: IntervalVariant) {
+    this._notes = this._notes.map((note) =>
+      note.interval(Interval.toCoord(interval))
+    );
+    return this;
+  }
+
   invertUp() {
     const newNote = this._notes[0].interval(Interval.toCoord("P8"));
     this._notes.push(newNote);

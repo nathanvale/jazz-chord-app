@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import Button from "@material-ui/core/Button";
+import React, { ChangeEvent, useState } from "react";
+import ToggleButton from "@material-ui/core/ToggleButton";
+import ToggleButtonGroup from "@material-ui/core/ToggleButtonGroup";
 import { useTheme } from "@material-ui/core";
 import { Keyboard } from "../Keyboard/Keyboard";
 import { chord } from "../Keyboard/chord";
 import { KeyboardOptions } from "../SVGKeyboard/KeyboardModel";
 import { getKeyboardLabels } from "./utils";
+import { circleOfFifths, Keys, maj7Open } from "../Keyboard/chords";
 
 export interface KeyboardControllerProps {}
 
@@ -20,46 +22,41 @@ export const KeyboardController = () => {
     strokeWidth: 1,
     fontFamily: theme.typography.fontFamily || "",
     rightHandKeysColor: theme.palette.info.light,
-    leftHandKeysColor: theme.palette.error.light,
+    leftHandKeysColor: theme.palette.error.light
   };
-  const [options, setOptions] =
-    useState<Partial<KeyboardOptions>>(defaultOptions);
-
-  const [lhk, setLeftHandKeys] = useState<Partial<KeyboardOptions>>(
-    getKeyboardLabels(chord("B", 3, ["P1"]))
+  const [options, setOptions] = useState<Partial<KeyboardOptions>>(
+    defaultOptions
   );
 
-  const [rhk, setRightHandKeys] = useState<Partial<KeyboardOptions>>(
-    getKeyboardLabels(chord("B", 3, ["M3", "P5", "M7", "M9"]))
-  );
+  const [key, setKey] = React.useState<Keys | undefined>();
 
-  function changeOptions() {
-    setOptions({ ...defaultOptions, scaleX: 1 });
-  }
+  const [lhk, setLeftHandKeys] = useState<Partial<KeyboardOptions>>();
 
-  function changeOptions2() {
-    setLeftHandKeys(getKeyboardLabels(chord("C", 4, ["P1"])));
-  }
+  const [rhk, setRightHandKeys] = useState<Partial<KeyboardOptions>>();
 
-  function changeOptions3() {
-    setRightHandKeys(
-      getKeyboardLabels(chord("C", 4, ["M3", "P5", "M7", "M9"]))
-    );
-  }
-  function changeOptions4() {
-    setLeftHandKeys(getKeyboardLabels(chord("B", 3, ["P1"])));
-    setRightHandKeys(
-      getKeyboardLabels(chord("B", 3, ["M3", "P5", "M7", "M9"]))
-    );
+  function handleChange(
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    value: Keys
+  ) {
+    setKey(value);
+    setLeftHandKeys(getKeyboardLabels(chord(value, 3, ["P1"])));
+    setRightHandKeys(getKeyboardLabels(chord(value, 3, maj7Open)));
   }
 
   return (
     <>
       <Keyboard leftHandKeys={lhk} rightHandKeys={rhk} options={options} />
-      <Button onClick={changeOptions}>Change</Button>
-      <Button onClick={changeOptions2}>Change</Button>
-      <Button onClick={changeOptions3}>Change</Button>
-      <Button onClick={changeOptions4}>Change</Button>
+
+      <ToggleButtonGroup
+        value={key}
+        color="primary"
+        exclusive
+        onChange={handleChange}
+      >
+        {circleOfFifths.map((note) => {
+          return <ToggleButton value={note}>{note}</ToggleButton>;
+        })}
+      </ToggleButtonGroup>
     </>
   );
 };
