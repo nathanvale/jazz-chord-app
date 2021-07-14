@@ -34,6 +34,7 @@ export const KeyboardController = () => {
     event: React.MouseEvent<HTMLElement, MouseEvent>,
     value: Keys
   ) {
+    if (!value) return;
     setKey(value);
     setLeftHandKeys(getKeyboardLabels(chord(value, 3, ["P1"])));
     setRightHandKeys(getKeyboardLabels(chord(value, 3, maj7Open)));
