@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 import ToggleButton from "@material-ui/core/ToggleButton";
 import ToggleButtonGroup from "@material-ui/core/ToggleButtonGroup";
 import { useTheme } from "@material-ui/core";
@@ -13,8 +13,6 @@ export interface KeyboardControllerProps {}
 export const KeyboardController = () => {
   const theme = useTheme();
 
-  console.log(theme);
-
   const defaultOptions = {
     range: ["C3", "C6"],
     scaleX: 2,
@@ -22,11 +20,9 @@ export const KeyboardController = () => {
     strokeWidth: 1,
     fontFamily: theme.typography.fontFamily || "",
     rightHandKeysColor: theme.palette.info.light,
-    leftHandKeysColor: theme.palette.error.light
+    leftHandKeysColor: theme.palette.error.light,
   };
-  const [options, setOptions] = useState<Partial<KeyboardOptions>>(
-    defaultOptions
-  );
+  const [options] = useState<Partial<KeyboardOptions>>(defaultOptions);
 
   const [key, setKey] = React.useState<Keys | undefined>();
 
@@ -54,7 +50,11 @@ export const KeyboardController = () => {
         onChange={handleChange}
       >
         {circleOfFifths.map((note) => {
-          return <ToggleButton value={note}>{note}</ToggleButton>;
+          return (
+            <ToggleButton key={note} value={note}>
+              {note}
+            </ToggleButton>
+          );
         })}
       </ToggleButtonGroup>
     </>

@@ -1,5 +1,4 @@
 import { IntervalVariant } from "teoria";
-import { Chord, chord } from "./chord";
 
 export type Keys =
   | "C"
@@ -27,7 +26,7 @@ export const circleOfFifths: Keys[] = [
   "Ab",
   "Eb",
   "Bb",
-  "F"
+  "F",
 ];
 
 export const maj7Open: IntervalVariant[] = ["M3", "P5", "M7", "M9"];
