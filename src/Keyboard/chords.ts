@@ -14,6 +14,8 @@ export type Keys =
   | "Bb"
   | "F";
 
+export type Chords = "maj7Open" | "maj7Closed";
+
 export const circleOfFifths: Keys[] = [
   "C",
   "G",
@@ -29,5 +31,7 @@ export const circleOfFifths: Keys[] = [
   "F",
 ];
 
-export const maj7Open: IntervalVariant[] = ["M3", "P5", "M7", "M9"];
-export const maj7Closed: IntervalVariant[] = ["M7", "M9", "M3", "P5"];
+export const chords: Record<Chords, IntervalVariant[]> = {
+  maj7Open: ["M3", "P5", "M7", "M9"],
+  maj7Closed: ["M7", "M9", "M3", "P5"],
+};

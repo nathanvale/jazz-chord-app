@@ -6,7 +6,7 @@ import { Keyboard } from "../Keyboard/Keyboard";
 import { chord } from "../Keyboard/chord";
 import { KeyboardOptions } from "../SVGKeyboard/KeyboardModel";
 import { getKeyboardLabels } from "./utils";
-import { circleOfFifths, Keys, maj7Open } from "../Keyboard/chords";
+import { chords, circleOfFifths, Keys } from "../Keyboard/chords";
 
 export interface KeyboardControllerProps {}
 
@@ -37,7 +37,7 @@ export const KeyboardController = () => {
     if (!value) return;
     setKey(value);
     setLeftHandKeys(getKeyboardLabels(chord(value, 3, ["P1"])));
-    setRightHandKeys(getKeyboardLabels(chord(value, 3, maj7Open)));
+    setRightHandKeys(getKeyboardLabels(chord(value, 3, chords.maj7Open)));
   }
 
   return (
@@ -49,6 +49,7 @@ export const KeyboardController = () => {
         color="primary"
         exclusive
         onChange={handleChange}
+        aria-label="Circle of fifths"
       >
         {circleOfFifths.map((note) => {
           return (

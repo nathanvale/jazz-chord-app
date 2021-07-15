@@ -71,51 +71,18 @@ export const Keyboard = ({
   const width = dimensions[0];
   const height = dimensions[1] + keyboardOptions.strokeWidth * 2;
   return (
-    <>
-      <svg width={width} height={height}>
-        <g>
-          {polygons &&
-            polygons.map(({ polygon }, index) => {
-              return [polygon && <polygon {...polygon} key={`p${index}`} />];
-            })}
-        </g>
-        <g>
-          {lhk &&
-            lhk.map(({ activeKey, text1, text2 }, index: number) => {
-              return [
-                activeKey && <polygon {...activeKey} key={`lhk${index}`} />,
-                text1 && (
-                  <text {...text1} key={`lhl1${index}`}>
-                    {text1.value}
-                  </text>
-                ),
-                text2 && (
-                  <text {...text2} key={`lhl2${index}`}>
-                    {text2.value}
-                  </text>
-                ),
-              ];
-            })}
-          {rhk &&
-            rhk.map(({ activeKey, text1, text2 }, index) => {
-              return [
-                activeKey && <polygon {...activeKey} key={`rhk${index}`} />,
-                text1 && (
-                  <text {...text1} key={`lhl1${index}`}>
-                    {text1.value}
-                  </text>
-                ),
-                text2 && (
-                  <text {...text2} key={`lhl2${index}`}>
-                    {text2.value}
-                  </text>
-                ),
-              ];
-            })}
-        </g>
-        {/* <g>
-          {leftHandLabels.map(({ text1, text2 }, index) => {
+    <svg width={width} height={height} aria-label="Keyboard">
+      <g aria-label="Keys">
+        {polygons &&
+          polygons.map(({ polygon }, index) => {
+            return [polygon && <polygon {...polygon} key={`p${index}`} />];
+          })}
+      </g>
+      <g aria-label="Left hand active keys">
+        {lhk &&
+          lhk.map(({ activeKey, text1, text2 }, index: number) => {
             return [
+              activeKey && <polygon {...activeKey} key={`lhk${index}`} />,
               text1 && (
                 <text {...text1} key={`lhl1${index}`}>
                   {text1.value}
@@ -128,23 +95,26 @@ export const Keyboard = ({
               ),
             ];
           })}
-          {rightHandLabels.map(({ text1, text2 }, index) => {
+      </g>
+      <g aria-label="Right hand active keys">
+        {rhk &&
+          rhk.map(({ activeKey, text1, text2 }, index) => {
             return [
+              activeKey && <polygon {...activeKey} key={`rhk${index}`} />,
               text1 && (
-                <text {...text1} key={`rhl1${index}`}>
+                <text {...text1} key={`lhl1${index}`}>
                   {text1.value}
                 </text>
               ),
               text2 && (
-                <text {...text2} key={`rhl2${index}`}>
+                <text {...text2} key={`lhl2${index}`}>
                   {text2.value}
                 </text>
               ),
             ];
           })}
-        </g> */}
-      </svg>
-    </>
+      </g>
+    </svg>
   );
 };
 

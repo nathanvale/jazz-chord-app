@@ -2,7 +2,8 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 
-it.skip("renders welcome message", () => {
+it("renders app with a keyboard", () => {
   render(<App />);
-  expect(screen.getByText("Hello World!")).toBeTruthy();
+  const keyboard = screen.getByLabelText("Keyboard");
+  expect(keyboard).toBeTruthy();
 });
