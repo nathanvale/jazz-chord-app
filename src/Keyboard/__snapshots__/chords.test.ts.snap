@@ -1,86 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should create correct chords 1`] = `
-Array [
-  Object {
-    "maj7Open": Array [
-      Object {
-        "C": "E3,G3,B3,D4",
-      },
-      Object {
-        "G": "B3,D4,F#4,A4",
-      },
-      Object {
-        "D": "F#3,A3,C#4,E4",
-      },
-      Object {
-        "A": "C#4,E4,G#4,B4",
-      },
-      Object {
-        "E": "G#3,B3,D#4,F#4",
-      },
-      Object {
-        "B": "D#4,F#4,A#4,C#5",
-      },
-      Object {
-        "F#": "A#3,C#4,E#4,G#4",
-      },
-      Object {
-        "Db": "F3,Ab3,C4,Eb4",
-      },
-      Object {
-        "Ab": "C4,Eb4,G4,Bb4",
-      },
-      Object {
-        "Eb": "G3,Bb3,D4,F4",
-      },
-      Object {
-        "Bb": "D4,F4,A4,C5",
-      },
-      Object {
-        "F": "A3,C4,E4,G4",
-      },
-    ],
-  },
-  Object {
-    "maj7Closed": Array [
-      Object {
-        "C": "B3,D4,E3,G3",
-      },
-      Object {
-        "G": "F#4,A4,B3,D4",
-      },
-      Object {
-        "D": "C#4,E4,F#3,A3",
-      },
-      Object {
-        "A": "G#4,B4,C#4,E4",
-      },
-      Object {
-        "E": "D#4,F#4,G#3,B3",
-      },
-      Object {
-        "B": "A#4,C#5,D#4,F#4",
-      },
-      Object {
-        "F#": "E#4,G#4,A#3,C#4",
-      },
-      Object {
-        "Db": "C4,Eb4,F3,Ab3",
-      },
-      Object {
-        "Ab": "G4,Bb4,C4,Eb4",
-      },
-      Object {
-        "Eb": "D4,F4,G3,Bb3",
-      },
-      Object {
-        "Bb": "A4,C5,D4,F4",
-      },
-      Object {
-        "F": "E4,G4,A3,C4",
-      },
-    ],
-  },
-]
+exports[`should create a chord interval map 1`] = `
+Object {
+  "maj7Closed": Array [
+    "M7",
+    "M9",
+    "M3",
+    "P5",
+  ],
+  "maj7Open": Array [
+    "M3",
+    "P5",
+    "M7",
+    "M9",
+  ],
+}
+`;
+
+exports[`should create a maj7Open chord 1`] = `
+Object {
+  "C": "E3,G3,B3,D4",
+}
 `;
