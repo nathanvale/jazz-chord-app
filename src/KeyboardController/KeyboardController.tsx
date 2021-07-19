@@ -21,7 +21,7 @@ export const KeyboardController = () => {
     strokeWidth: 1,
     fontFamily: theme.typography.fontFamily || "",
     rightHandKeysColor: theme.palette.info.light,
-    leftHandKeysColor: theme.palette.error.light,
+    leftHandKeysColor: theme.palette.error.light
   };
   const [options] = useState<Partial<KeyboardOptions>>(defaultOptions);
 
@@ -67,7 +67,7 @@ export const KeyboardController = () => {
       >
         {Object.keys(chords).map((chord) => {
           return (
-            <ToggleButton key={chord} value={chord}>
+            <ToggleButton role="button" key={chord} value={chord}>
               {chord}
             </ToggleButton>
           );
@@ -82,7 +82,12 @@ export const KeyboardController = () => {
       >
         {keys.map((note) => {
           return (
-            <ToggleButton key={note} value={note} disabled={!selectedChord}>
+            <ToggleButton
+              role="button"
+              key={note}
+              value={note}
+              disabled={!selectedChord}
+            >
               {note}
             </ToggleButton>
           );
