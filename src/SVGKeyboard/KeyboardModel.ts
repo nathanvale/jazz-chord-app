@@ -109,7 +109,7 @@ export const keyboard: KeyBasics[] = [
   },
   {
     sharp: false,
-    pitches: ["E"],
+    pitches: ["E", "Fb"],
     upperOffset: 8.55,
     upperWidth: 15.05,
   },
@@ -205,14 +205,8 @@ export function getPoints(key: Key, offsetY: number) {
 }
 
 export function getKeySizes(options: KeyboardOptions) {
-  const {
-    lowerHeight,
-    upperHeight,
-    lowerWidth,
-    strokeWidth,
-    palette,
-    stroke,
-  } = options;
+  const { lowerHeight, upperHeight, lowerWidth, strokeWidth, palette, stroke } =
+    options;
   return keyboard.map<Key>((key, index) =>
     Object.assign(key, {
       // add black/white specific props > black keys have no lower part
@@ -381,14 +375,8 @@ export class KeyboardModel {
 
     this._keysMap = {};
     const keySizes = getKeySizes(this._options);
-    const {
-      keyCount,
-      scaleY,
-      scaleX,
-      lowerWidth,
-      strokeWidth,
-      keyOffset,
-    } = this._options;
+    const { keyCount, scaleY, scaleX, lowerWidth, strokeWidth, keyOffset } =
+      this._options;
     this._keys = Array(keyCount + keyOffset)
       .fill(0)
       .map((_, index, _keys) => keySizes[index % 12])
@@ -484,6 +472,7 @@ export class KeyboardModel {
     keys: Partial<KeyboardOptions>,
     options: TextOptions = {}
   ): RenderActiveKey[] {
+    // console.log(keys);
     return Object.keys(keys).map((keyName) => {
       const key = this._keysMap[keyName].key; //?
       let fill = options?.fill;
@@ -514,14 +503,14 @@ export class KeyboardModel {
   }
 }
 
-// const k = new KeyboardModel({ range: ["C3", "C6"] });
+//const k = new KeyboardModel({ range: ["C3", "C6"] });
 
 // const leftHandLabels = { B3: "P1" }; //?
-// const rightHandLabels = { "D#4": "M3", "F#4": "P5", "A#4": "M7", "C#5": "M9" }; //?
+//const rightHandLabels = { Fb3: "m3", Ab3: "P5", Cb4: "m7", Eb4: "M9" }; //?
 
 // console.log(k.getOptions());
 // console.log(k.getSVGDimensions());
 // console.log(k.getPolygons());
 // console.log(k.getLeftHandLabels(leftHandLabels));
-// console.log(k.getRightHandLabels(rightHandLabels));
+//console.log(k.getRightHandKeys(rightHandLabels));
 // console.log(k.getLeftHandKeys(leftHandLabels));

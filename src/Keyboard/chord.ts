@@ -68,7 +68,10 @@ export class Chord {
   simple() {
     return this._notes.map((n) => {
       const key = n.toString(true);
-      const string = key.charAt(0).toUpperCase() + key.slice(1) + n.octave(); //?
+      let octave = Number(n.octave());
+      if (key === "cb") octave--;
+      const string = key.charAt(0).toUpperCase() + key.slice(1) + octave; //?
+
       return string;
     });
   }
