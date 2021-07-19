@@ -1,8 +1,8 @@
 import { chord } from "./chord";
-import { Key, Chord, chords } from "./chords";
+import { Key, ChordVariant, chords } from "./chords";
 
-const createChordMap = (c: Chord) => (note: Key) => ({
-  [note]: chord(note, 3, chords[c]).simple().toString(),
+const createChordMap = (c: ChordVariant) => (note: Key) => ({
+  [note]: chord(note, 3, chords[c].intervals).simple().toString()
 });
 
 it("should create a maj9ww chord", () => {

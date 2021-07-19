@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import { KeyboardController } from "./KeyboardController";
-import { Chord, chords, keys } from "../Keyboard/chords";
+import { ChordVariant, chords, keys } from "../Keyboard/chords";
 
 function renderKeyboardController() {
   render(<KeyboardController />);
@@ -14,7 +14,7 @@ it("should have all toggle button chords", () => {
   const { toggleButtonChords } = renderKeyboardController();
   let buttons = within(toggleButtonChords).getAllByRole("button");
   buttons.map((button, index) => {
-    const chord = Object.keys(chords)[index] as Chord;
+    const chord = Object.keys(chords)[index] as ChordVariant;
     expect(button).toHaveTextContent(chord);
   });
 });
@@ -42,15 +42,15 @@ it("should have disabled keys when no chord is selected", () => {
 
 it("should toggle between chords", () => {
   const { toggleButtonChords, toggleButtonKeys } = renderKeyboardController();
-  let chord: Chord = "maj9";
+  let chord: ChordVariant = "maj9";
   let button = within(toggleButtonChords).getByRole("button", {
-    name: new RegExp(chord, "i"),
+    name: new RegExp(chord, "i")
   });
   fireEvent.click(button);
 
   function clickFirstKey() {
     button = within(toggleButtonKeys).getByRole("button", {
-      name: new RegExp(keys[0], "i"),
+      name: new RegExp(keys[0], "i")
     });
     fireEvent.click(button);
   }
@@ -84,7 +84,7 @@ it("should toggle between chords", () => {
 
   chord = "min9";
   button = within(toggleButtonChords).getByRole("button", {
-    name: new RegExp(chord, "i"),
+    name: new RegExp(chord, "i")
   });
   fireEvent.click(button);
 

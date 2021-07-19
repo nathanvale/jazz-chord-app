@@ -14,7 +14,12 @@ export type Key =
   | "Bb"
   | "F";
 
-export type Chord = "maj9" | "min9";
+export type ChordVariant = "maj9" | "min9";
+
+export type Chord = {
+  intervals: IntervalVariant[];
+  open?: boolean;
+};
 
 export const keys: Key[] = [
   "C",
@@ -28,10 +33,10 @@ export const keys: Key[] = [
   "Ab",
   "Eb",
   "Bb",
-  "F",
+  "F"
 ];
 
-export const chords: Record<Chord, IntervalVariant[]> = {
-  maj9: ["M7", "M9", "M3", "P5"],
-  min9: ["m3", "P5", "m7", "M9"],
+export const chords: Record<ChordVariant, Chord> = {
+  maj9: { intervals: ["M7", "M9", "M3", "P5"], open: true },
+  min9: { intervals: ["m3", "P5", "m7", "M9"], open: true }
 };

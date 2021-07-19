@@ -7,7 +7,7 @@ import { Keyboard } from "../Keyboard/Keyboard";
 import { chord } from "../Keyboard/chord";
 import { KeyboardOptions } from "../SVGKeyboard/KeyboardModel";
 import { getKeyboardLabels } from "./utils";
-import { Chord, chords, keys, Key } from "../Keyboard/chords";
+import { ChordVariant, chords, keys, Key } from "../Keyboard/chords";
 
 export interface KeyboardControllerProps {}
 
@@ -27,7 +27,9 @@ export const KeyboardController = () => {
 
   const [selectedKey, setKey] = React.useState<Key | undefined>();
 
-  const [selectedChord, setSelectedChord] = useState<Chord | undefined>();
+  const [selectedChord, setSelectedChord] = useState<
+    ChordVariant | undefined
+  >();
 
   const [lhk, setLeftHandKeys] = useState<Partial<KeyboardOptions>>();
 
@@ -40,18 +42,22 @@ export const KeyboardController = () => {
     if (!value || !selectedChord) return;
     setKey(value);
     setLeftHandKeys(getKeyboardLabels(chord(value, 3, ["P1"])));
-    setRightHandKeys(getKeyboardLabels(chord(value, 3, chords[selectedChord])));
+    setRightHandKeys(
+      getKeyboardLabels(chord(value, 3, chords[selectedChord].intervals))
+    );
   }
 
   function handleChordChange(
     event: React.MouseEvent<HTMLElement, MouseEvent>,
-    value: Chord
+    value: ChordVariant
   ) {
     if (!value) return;
     setSelectedChord(value);
     if (selectedKey) {
       setLeftHandKeys(getKeyboardLabels(chord(selectedKey, 3, ["P1"])));
-      setRightHandKeys(getKeyboardLabels(chord(selectedKey, 3, chords[value])));
+      setRightHandKeys(
+        getKeyboardLabels(chord(selectedKey, 3, chords[value].intervals))
+      );
     }
   }
 
