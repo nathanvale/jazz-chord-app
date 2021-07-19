@@ -1,6 +1,6 @@
 import { IntervalVariant } from "teoria";
 
-export type Keys =
+export type Key =
   | "C"
   | "G"
   | "D"
@@ -14,9 +14,9 @@ export type Keys =
   | "Bb"
   | "F";
 
-export type Chords = "maj7Open" | "maj7Closed";
+export type Chord = "maj9" | "min9";
 
-export const circleOfFifths: Keys[] = [
+export const keys: Key[] = [
   "C",
   "G",
   "D",
@@ -31,7 +31,7 @@ export const circleOfFifths: Keys[] = [
   "F",
 ];
 
-export const chords: Record<Chords, IntervalVariant[]> = {
-  maj7Open: ["M3", "P5", "M7", "M9"],
-  maj7Closed: ["M7", "M9", "M3", "P5"],
+export const chords: Record<Chord, IntervalVariant[]> = {
+  maj9: ["M7", "M9", "M3", "P5"],
+  min9: ["m3", "P5", "m7", "M9"],
 };

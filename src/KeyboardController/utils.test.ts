@@ -3,7 +3,7 @@ import { chords } from "../Keyboard/chords";
 import { getKeyboardLabels } from "./utils";
 
 it("converts a chord to labels", () => {
-  const c = chord("C", 3, chords.maj7Open);
+  const c = chord("C", 3, chords.maj9);
   expect(getKeyboardLabels(c)).toEqual({
     B3: "M7",
     D4: "M9",

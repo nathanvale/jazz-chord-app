@@ -2,23 +2,23 @@
 
 exports[`should create a chord interval map 1`] = `
 Object {
-  "maj7Closed": Array [
+  "maj9": Array [
     "M7",
     "M9",
     "M3",
     "P5",
   ],
-  "maj7Open": Array [
-    "M3",
+  "min9": Array [
+    "m3",
     "P5",
-    "M7",
+    "m7",
     "M9",
   ],
 }
 `;
 
-exports[`should create a maj7Open chord 1`] = `
+exports[`should create a maj9ww chord 1`] = `
 Object {
-  "C": "E3,G3,B3,D4",
+  "C": "B3,D4,E3,G3",
 }
 `;

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import ToggleButton from "@material-ui/core/ToggleButton";
+import Stack from "@material-ui/core/Stack";
 import ToggleButtonGroup from "@material-ui/core/ToggleButtonGroup";
 import { useTheme } from "@material-ui/core";
 import { Keyboard } from "../Keyboard/Keyboard";
 import { chord } from "../Keyboard/chord";
 import { KeyboardOptions } from "../SVGKeyboard/KeyboardModel";
 import { getKeyboardLabels } from "./utils";
-import { chords, circleOfFifths, Keys } from "../Keyboard/chords";
+import { Chord, chords, keys, Key } from "../Keyboard/chords";
 
 export interface KeyboardControllerProps {}
 
@@ -24,42 +25,70 @@ export const KeyboardController = () => {
   };
   const [options] = useState<Partial<KeyboardOptions>>(defaultOptions);
 
-  const [key, setKey] = React.useState<Keys | undefined>();
+  const [selectedKey, setKey] = React.useState<Key | undefined>();
+
+  const [selectedChord, setSelectedChord] = useState<Chord | undefined>();
 
   const [lhk, setLeftHandKeys] = useState<Partial<KeyboardOptions>>();
 
   const [rhk, setRightHandKeys] = useState<Partial<KeyboardOptions>>();
 
-  function handleChange(
+  function handleKeyChange(
     event: React.MouseEvent<HTMLElement, MouseEvent>,
-    value: Keys
+    value: Key
   ) {
-    if (!value) return;
+    if (!value || !selectedChord) return;
     setKey(value);
     setLeftHandKeys(getKeyboardLabels(chord(value, 3, ["P1"])));
-    setRightHandKeys(getKeyboardLabels(chord(value, 3, chords.maj7Open)));
+    setRightHandKeys(getKeyboardLabels(chord(value, 3, chords[selectedChord])));
+  }
+
+  function handleChordChange(
+    event: React.MouseEvent<HTMLElement, MouseEvent>,
+    value: Chord
+  ) {
+    if (!value) return;
+    setSelectedChord(value);
+    if (selectedKey) {
+      setLeftHandKeys(getKeyboardLabels(chord(selectedKey, 3, ["P1"])));
+      setRightHandKeys(getKeyboardLabels(chord(selectedKey, 3, chords[value])));
+    }
   }
 
   return (
-    <>
+    <Stack spacing={2}>
       <Keyboard leftHandKeys={lhk} rightHandKeys={rhk} options={options} />
-
       <ToggleButtonGroup
-        value={key}
+        value={selectedChord}
         color="primary"
         exclusive
-        onChange={handleChange}
-        aria-label="Circle of fifths"
+        onChange={handleChordChange}
+        aria-label="Toggle button chords"
       >
-        {circleOfFifths.map((note) => {
+        {Object.keys(chords).map((chord) => {
           return (
-            <ToggleButton key={note} value={note}>
+            <ToggleButton key={chord} value={chord}>
+              {chord}
+            </ToggleButton>
+          );
+        })}
+      </ToggleButtonGroup>
+      <ToggleButtonGroup
+        value={selectedKey}
+        color="primary"
+        exclusive
+        onChange={handleKeyChange}
+        aria-label="Toggle button keys"
+      >
+        {keys.map((note) => {
+          return (
+            <ToggleButton key={note} value={note} disabled={!selectedChord}>
               {note}
             </ToggleButton>
           );
         })}
       </ToggleButtonGroup>
-    </>
+    </Stack>
   );
 };
 
