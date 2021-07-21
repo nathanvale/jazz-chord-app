@@ -1,5 +1,6 @@
-/* eslint-disable no-console */
-import { Interval, Note, IntervalVariant } from "teoria";
+import { IntervalVariant } from "teoria";
+import Interval from "./interval";
+import { Note } from "./note";
 
 export class Chord {
   private _rootNote: Note;
@@ -7,7 +8,7 @@ export class Chord {
   private _notes: Note[];
 
   constructor(rootNote: Note, voicing: IntervalVariant[]) {
-    this._rootNote = rootNote; //?
+    this._rootNote = rootNote;
     this._notes = voicing.map((interval) => {
       return rootNote.interval(interval);
     });
@@ -70,8 +71,7 @@ export class Chord {
       const key = n.toString(true);
       let octave = Number(n.octave());
       if (key === "cb") octave--;
-      const string = key.charAt(0).toUpperCase() + key.slice(1) + octave; //?
-
+      const string = key.charAt(0).toUpperCase() + key.slice(1) + octave;
       return string;
     });
   }
@@ -84,9 +84,9 @@ export function chord(
 ) {
   let r, o;
   if (typeof root === "string") {
-    r = root.match(/^([a-h])(x|#|bb|b?)/i); //?
+    r = root.match(/^([a-h])(x|#|bb|b?)/i);
     if (r && r[0]) {
-      o = typeof octave === "number" ? octave.toString(10) : "4"; //?
+      o = typeof octave === "number" ? octave.toString(10) : "4";
       return new Chord(Note.fromString(r[0].toLowerCase() + o), voicing);
     }
   }
@@ -94,7 +94,7 @@ export function chord(
   throw new Error("Invalid Chord. Couldn't find note name");
 }
 
-//const c = chord("Eb", 4, ["M3", "P5", "M7", "M9"]); //?
+//const c = chord("Eb", 4, ["M3", "P5", "M7", "M9"]);
 // console.log(c.notes());
 // console.log(c.simple());
 // //console.log(c.invertDown().simple());

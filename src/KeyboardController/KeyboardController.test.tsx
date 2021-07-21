@@ -1,13 +1,44 @@
 import React from "react";
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import { KeyboardController } from "./KeyboardController";
-import { ChordVariant, chords, keys } from "../Keyboard/chords";
+import { ChordVariant, chords, keys, KeyVariant } from "../Keyboard/chords";
 
 function renderKeyboardController() {
   render(<KeyboardController />);
   const toggleButtonChords = screen.getByLabelText("Toggle button chords");
   const toggleButtonKeys = screen.getByLabelText("Toggle button keys");
-  return { toggleButtonChords, toggleButtonKeys };
+  const keyboard = screen.getByLabelText("Keyboard");
+
+  const leftHandActiveKeys = within(
+    within(keyboard).getByLabelText("Left hand active keys")
+  );
+
+  const rightHandActiveKeys = within(
+    within(keyboard).getByLabelText("Right hand active keys")
+  );
+
+  function selectChord(chord: ChordVariant) {
+    const button = within(toggleButtonChords).getByRole("button", {
+      name: new RegExp(`^${chord}$`, "i"),
+    });
+    fireEvent.click(button);
+  }
+
+  function selectKey(key: KeyVariant) {
+    const button = within(toggleButtonKeys).getByRole("button", {
+      name: new RegExp(key, "i"),
+    });
+    fireEvent.click(button);
+  }
+
+  return {
+    toggleButtonChords,
+    toggleButtonKeys,
+    leftHandActiveKeys,
+    rightHandActiveKeys,
+    selectChord,
+    selectKey,
+  };
 }
 
 it("should have all toggle button chords", () => {
@@ -40,68 +71,60 @@ it("should have disabled keys when no chord is selected", () => {
   });
 });
 
+it("should render chords with custom interval labels ", () => {
+  const { selectChord, selectKey, rightHandActiveKeys } =
+    renderKeyboardController();
+  selectChord("maj9Closed");
+  selectKey("C");
+  expect(rightHandActiveKeys.getByText("B3")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("M7")).toBeInTheDocument();
+
+  expect(rightHandActiveKeys.getByText("D4")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("M9")).toBeInTheDocument();
+
+  expect(rightHandActiveKeys.getByText("E4")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("M3")).toBeInTheDocument();
+
+  expect(rightHandActiveKeys.getByText("G4")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("P5")).toBeInTheDocument();
+});
+
 it("should toggle between chords", () => {
-  const { toggleButtonChords, toggleButtonKeys } = renderKeyboardController();
-  let chord: ChordVariant = "maj9";
-  let button = within(toggleButtonChords).getByRole("button", {
-    name: new RegExp(chord, "i")
-  });
-  fireEvent.click(button);
+  const { selectChord, selectKey, leftHandActiveKeys, rightHandActiveKeys } =
+    renderKeyboardController();
 
-  function clickFirstKey() {
-    button = within(toggleButtonKeys).getByRole("button", {
-      name: new RegExp(keys[0], "i")
-    });
-    fireEvent.click(button);
-  }
+  selectChord("maj9");
+  selectKey("C");
 
-  clickFirstKey();
+  expect(leftHandActiveKeys.getByText("C3")).toBeInTheDocument();
+  expect(leftHandActiveKeys.getByText("P1")).toBeInTheDocument();
 
-  const keyboard = screen.getByLabelText("Keyboard");
+  expect(rightHandActiveKeys.getByText("E3")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("M3")).toBeInTheDocument();
 
-  let leftHandActiveKeys = within(
-    within(keyboard).getByLabelText("Left hand active keys")
-  );
+  expect(rightHandActiveKeys.getByText("G3")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("P5")).toBeInTheDocument();
 
-  let rightHandActiveKeys = within(
-    within(keyboard).getByLabelText("Right hand active keys")
-  );
+  expect(rightHandActiveKeys.getByText("B3")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("M7")).toBeInTheDocument();
 
-  expect(leftHandActiveKeys.getByText("C3")).toBeTruthy();
-  expect(leftHandActiveKeys.getByText("P1")).toBeTruthy();
+  expect(rightHandActiveKeys.getByText("D4")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("M9")).toBeInTheDocument();
 
-  expect(rightHandActiveKeys.getByText("E3")).toBeTruthy();
-  expect(rightHandActiveKeys.getByText("M3")).toBeTruthy();
+  selectChord("min9");
 
-  expect(rightHandActiveKeys.getByText("G3")).toBeTruthy();
-  expect(rightHandActiveKeys.getByText("P5")).toBeTruthy();
+  expect(leftHandActiveKeys.getByText("C3")).toBeInTheDocument();
+  expect(leftHandActiveKeys.getByText("P1")).toBeInTheDocument();
 
-  expect(rightHandActiveKeys.getByText("B3")).toBeTruthy();
-  expect(rightHandActiveKeys.getByText("M7")).toBeTruthy();
+  expect(rightHandActiveKeys.getByText("Eb3")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("m3")).toBeInTheDocument();
 
-  expect(rightHandActiveKeys.getByText("D4")).toBeTruthy();
-  expect(rightHandActiveKeys.getByText("M9")).toBeTruthy();
+  expect(rightHandActiveKeys.getByText("G3")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("P5")).toBeInTheDocument();
 
-  chord = "min9";
-  button = within(toggleButtonChords).getByRole("button", {
-    name: new RegExp(chord, "i")
-  });
-  fireEvent.click(button);
+  expect(rightHandActiveKeys.getByText("Bb3")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("m7")).toBeInTheDocument();
 
-  clickFirstKey();
-
-  expect(leftHandActiveKeys.getByText("C3")).toBeTruthy();
-  expect(leftHandActiveKeys.getByText("P1")).toBeTruthy();
-
-  expect(rightHandActiveKeys.getByText("Eb3")).toBeTruthy();
-  expect(rightHandActiveKeys.getByText("m3")).toBeTruthy();
-
-  expect(rightHandActiveKeys.getByText("G3")).toBeTruthy();
-  expect(rightHandActiveKeys.getByText("P5")).toBeTruthy();
-
-  expect(rightHandActiveKeys.getByText("Bb3")).toBeTruthy();
-  expect(rightHandActiveKeys.getByText("m7")).toBeTruthy();
-
-  expect(rightHandActiveKeys.getByText("D4")).toBeTruthy();
-  expect(rightHandActiveKeys.getByText("M9")).toBeTruthy();
+  expect(rightHandActiveKeys.getByText("D4")).toBeInTheDocument();
+  expect(rightHandActiveKeys.getByText("M9")).toBeInTheDocument();
 });

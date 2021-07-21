@@ -2,23 +2,56 @@
 
 exports[`should create a chord interval map 1`] = `
 Object {
-  "maj9": Array [
-    "M7",
-    "M9",
-    "M3",
-    "P5",
-  ],
-  "min9": Array [
-    "m3",
-    "P5",
-    "m7",
-    "M9",
-  ],
+  "maj9": Object {
+    "intervals": Array [
+      "M3",
+      "P5",
+      "M7",
+      "M9",
+    ],
+    "name": "maj9",
+    "open": true,
+  },
+  "maj9Closed": Object {
+    "intervalLabels": Array [
+      "M7",
+      "M9",
+      "M3",
+      "P5",
+    ],
+    "intervals": Array [
+      "M7",
+      "M9",
+      "M10",
+      "M12",
+    ],
+    "name": "maj9Closed",
+    "open": true,
+  },
+  "majTriad": Object {
+    "intervals": Array [
+      "P1",
+      "M3",
+      "P5",
+    ],
+    "name": "majTriad",
+    "open": false,
+  },
+  "min9": Object {
+    "intervals": Array [
+      "m3",
+      "P5",
+      "m7",
+      "M9",
+    ],
+    "name": "min9",
+    "open": true,
+  },
 }
 `;
 
-exports[`should create a maj9ww chord 1`] = `
+exports[`should create a maj9 chord 1`] = `
 Object {
-  "C": "B3,D4,E3,G3",
+  "C": "E3,G3,B3,D4",
 }
 `;

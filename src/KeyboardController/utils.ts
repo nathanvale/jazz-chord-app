@@ -1,6 +1,10 @@
+import { IntervalVariant } from "teoria";
 import { Chord } from "../Keyboard/chord";
 
-export const getKeyboardLabels = (c: Chord) => {
+export const getKeyboardLabels = (
+  c: Chord,
+  intervalLabels?: IntervalVariant[]
+) => {
   const voicing = c.voicing().toString().split(",");
   const notes = c.simple();
   return notes.reduce<Record<string, string>>(
@@ -11,7 +15,9 @@ export const getKeyboardLabels = (c: Chord) => {
     ) => {
       return {
         ...previousValue,
-        [currentValue]: voicing[currentIndex],
+        [currentValue]: intervalLabels
+          ? intervalLabels[currentIndex]
+          : voicing[currentIndex],
       };
     },
     {}
