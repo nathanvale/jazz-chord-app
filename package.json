@@ -16,7 +16,10 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-scripts": "4.0.3",
-    "teoria": "^2.5.0"
+    "helmholtz": "^2.0.1",
+    "interval-coords": "^1.1.1",
+    "pitch-fq": "^1.0.0",
+    "scientific-notation": "^1.0.2"
   },
   "devDependencies": {
     "@babel/runtime": "7.13.8",
@@ -50,7 +53,10 @@
       "react-app/jest",
       "plugin:testing-library/react",
       "plugin:jest-dom/recommended"
-    ]
+    ],
+    "rules": {
+      "no-console": "warn"
+    }
   },
   "husky": {
     "hooks": {

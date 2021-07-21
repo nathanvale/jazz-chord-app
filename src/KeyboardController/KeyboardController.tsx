@@ -4,10 +4,16 @@ import Stack from "@material-ui/core/Stack";
 import ToggleButtonGroup from "@material-ui/core/ToggleButtonGroup";
 import { useTheme } from "@material-ui/core";
 import { Keyboard } from "../Keyboard/Keyboard";
-import { chord } from "../Keyboard/chord";
+import { Chord, chord } from "../Keyboard/chord";
 import { KeyboardOptions } from "../SVGKeyboard/KeyboardModel";
 import { getKeyboardLabels } from "./utils";
-import { Chord, chords, keys, Key } from "../Keyboard/chords";
+import {
+  ChordVariant,
+  chords,
+  keys,
+  KeyVariant,
+  ChordAttributes,
+} from "../Keyboard/chords";
 
 export interface KeyboardControllerProps {}
 
@@ -21,45 +27,66 @@ export const KeyboardController = () => {
     strokeWidth: 1,
     fontFamily: theme.typography.fontFamily || "",
     rightHandKeysColor: theme.palette.info.light,
-    leftHandKeysColor: theme.palette.error.light
+    leftHandKeysColor: theme.palette.error.light,
   };
   const [options] = useState<Partial<KeyboardOptions>>(defaultOptions);
 
-  const [selectedKey, setKey] = React.useState<Key | undefined>();
+  const [selectedKey, setKey] = React.useState<KeyVariant | undefined>();
+  const [selectedChord, setSelectedChord] = useState<
+    ChordAttributes | undefined
+  >();
 
-  const [selectedChord, setSelectedChord] = useState<Chord | undefined>();
+  const [lhk, setLeftHandKeys] = useState<Chord>();
 
-  const [lhk, setLeftHandKeys] = useState<Partial<KeyboardOptions>>();
+  const [rhk, setRightHandKeys] = useState<Chord>();
 
-  const [rhk, setRightHandKeys] = useState<Partial<KeyboardOptions>>();
+  function playKeys(k: KeyVariant, c: ChordAttributes) {
+    const leftChord = chord(k, 3, ["P1"]);
+    setLeftHandKeys(leftChord);
+    const rightChord = chord(k, 3, c.intervals);
+    setRightHandKeys(rightChord);
+  }
 
   function handleKeyChange(
     event: React.MouseEvent<HTMLElement, MouseEvent>,
-    value: Key
+    value: KeyVariant
   ) {
     if (!value || !selectedChord) return;
     setKey(value);
-    setLeftHandKeys(getKeyboardLabels(chord(value, 3, ["P1"])));
-    setRightHandKeys(getKeyboardLabels(chord(value, 3, chords[selectedChord])));
+    playKeys(value, chords[selectedChord.name]);
   }
 
   function handleChordChange(
     event: React.MouseEvent<HTMLElement, MouseEvent>,
-    value: Chord
+    value: ChordVariant
   ) {
     if (!value) return;
-    setSelectedChord(value);
+    const chordAttributes = chords[value];
+
+    setSelectedChord(chordAttributes);
+
     if (selectedKey) {
-      setLeftHandKeys(getKeyboardLabels(chord(selectedKey, 3, ["P1"])));
-      setRightHandKeys(getKeyboardLabels(chord(selectedKey, 3, chords[value])));
+      playKeys(selectedKey, chordAttributes);
     }
   }
 
   return (
     <Stack spacing={2}>
-      <Keyboard leftHandKeys={lhk} rightHandKeys={rhk} options={options} />
+      <Keyboard
+        leftHandKeys={
+          lhk
+            ? getKeyboardLabels(lhk, selectedChord?.intervalLabels)
+            : undefined
+        }
+        rightHandKeys={
+          rhk
+            ? getKeyboardLabels(rhk, selectedChord?.intervalLabels)
+            : undefined
+        }
+        options={options}
+      />
       <ToggleButtonGroup
-        value={selectedChord}
+        value={selectedChord?.name}
         color="primary"
         exclusive
         onChange={handleChordChange}
@@ -67,7 +94,12 @@ export const KeyboardController = () => {
       >
         {Object.keys(chords).map((chord) => {
           return (
-            <ToggleButton role="button" key={chord} value={chord}>
+            <ToggleButton
+              aria-label={chord}
+              role="button"
+              key={chord}
+              value={chord}
+            >
               {chord}
             </ToggleButton>
           );
@@ -84,6 +116,7 @@ export const KeyboardController = () => {
           return (
             <ToggleButton
               role="button"
+              aria-label={note}
               key={note}
               value={note}
               disabled={!selectedChord}
