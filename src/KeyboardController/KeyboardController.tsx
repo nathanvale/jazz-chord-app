@@ -7,6 +7,8 @@ import { Keyboard } from "../Keyboard/Keyboard";
 import { Chord, chord } from "../Keyboard/chord";
 import { KeyboardOptions } from "../SVGKeyboard/KeyboardModel";
 import { getKeyboardLabels } from "./utils";
+
+import { styled } from "@material-ui/core/styles";
 import {
   ChordVariant,
   chords,
@@ -16,6 +18,10 @@ import {
 } from "../Keyboard/chords";
 
 export interface KeyboardControllerProps {}
+
+const CustomToggleButton = styled(ToggleButton)(({ theme }) => ({
+  textTransform: "none",
+}));
 
 export const KeyboardController = () => {
   const theme = useTheme();
@@ -94,14 +100,14 @@ export const KeyboardController = () => {
       >
         {Object.keys(chords).map((chord) => {
           return (
-            <ToggleButton
+            <CustomToggleButton
               aria-label={chord}
               role="button"
               key={chord}
               value={chord}
             >
               {chord}
-            </ToggleButton>
+            </CustomToggleButton>
           );
         })}
       </ToggleButtonGroup>
@@ -114,7 +120,7 @@ export const KeyboardController = () => {
       >
         {keys.map((note) => {
           return (
-            <ToggleButton
+            <CustomToggleButton
               role="button"
               aria-label={note}
               key={note}
@@ -122,7 +128,7 @@ export const KeyboardController = () => {
               disabled={!selectedChord}
             >
               {note}
-            </ToggleButton>
+            </CustomToggleButton>
           );
         })}
       </ToggleButtonGroup>
