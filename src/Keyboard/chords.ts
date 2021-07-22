@@ -12,7 +12,14 @@ export type KeyVariant =
   | "Bb"
   | "F";
 
-export type ChordVariant = "maj9" | "maj9Closed" | "min9" | "majTriad";
+export type ChordVariant =
+  | "maj9"
+  | "maj9Closed"
+  | "min9"
+  | "min9Closed"
+  | "dom13"
+  | "dom13Closed"
+  | "majTriad";
 
 export type IntervalVariant =
   // perfect
@@ -219,5 +226,29 @@ export const chords: Record<ChordVariant, ChordAttributes> = {
     name: "min9",
     leftHand: { intervals: ["P1"] },
     rightHand: { intervals: ["m3", "P5", "m7", "M9"] },
+  },
+  min9Closed: {
+    name: "min9Closed",
+    leftHand: { intervals: ["P1"] },
+    rightHand: {
+      intervals: ["m7", "M9", "m10", "M12"],
+      intervalLabels: ["m7", "M9", "m3", "P5"],
+    },
+  },
+  dom13: {
+    name: "dom13",
+    leftHand: { intervals: ["P1"] },
+    rightHand: {
+      intervals: ["m7", "M9", "M10", "M13"],
+      intervalLabels: ["m7", "M9", "M3", "M13"],
+    },
+  },
+  dom13Closed: {
+    name: "dom13Closed",
+    leftHand: { intervals: ["P1"] },
+    rightHand: {
+      intervals: ["M3", "M6", "m7", "M9"],
+      intervalLabels: ["M3", "M13", "m7", "M9"],
+    },
   },
 };

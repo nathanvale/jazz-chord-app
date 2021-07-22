@@ -2,6 +2,50 @@
 
 exports[`should create a chord interval map 1`] = `
 Object {
+  "dom13": Object {
+    "leftHand": Object {
+      "intervals": Array [
+        "P1",
+      ],
+    },
+    "name": "dom13",
+    "rightHand": Object {
+      "intervalLabels": Array [
+        "m7",
+        "M9",
+        "M3",
+        "M13",
+      ],
+      "intervals": Array [
+        "m7",
+        "M9",
+        "M10",
+        "M13",
+      ],
+    },
+  },
+  "dom13Closed": Object {
+    "leftHand": Object {
+      "intervals": Array [
+        "P1",
+      ],
+    },
+    "name": "dom13Closed",
+    "rightHand": Object {
+      "intervalLabels": Array [
+        "M3",
+        "M13",
+        "m7",
+        "M9",
+      ],
+      "intervals": Array [
+        "M3",
+        "M6",
+        "m7",
+        "M9",
+      ],
+    },
+  },
   "maj9": Object {
     "leftHand": Object {
       "intervals": Array [
@@ -68,6 +112,28 @@ Object {
         "P5",
         "m7",
         "M9",
+      ],
+    },
+  },
+  "min9Closed": Object {
+    "leftHand": Object {
+      "intervals": Array [
+        "P1",
+      ],
+    },
+    "name": "min9Closed",
+    "rightHand": Object {
+      "intervalLabels": Array [
+        "m7",
+        "M9",
+        "m3",
+        "P5",
+      ],
+      "intervals": Array [
+        "m7",
+        "M9",
+        "m10",
+        "M12",
       ],
     },
   },
