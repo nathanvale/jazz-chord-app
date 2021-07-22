@@ -3,8 +3,7 @@ import { chords } from "../Keyboard/chords";
 import { getKeyboardLabels } from "./utils";
 
 it("converts a maj9 chord to labels", () => {
-  const c = chord("C", 3, chords["maj9"].intervals);
-  console.log(JSON.stringify(getKeyboardLabels(c)));
+  const c = chord("C", 3, chords["maj9"].rightHand.intervals);
   expect(getKeyboardLabels(c)).toEqual({
     B3: "M7",
     D4: "M9",
@@ -14,7 +13,7 @@ it("converts a maj9 chord to labels", () => {
 });
 
 it("converts a maj9Closed chord to labels", () => {
-  const c = chord("C", 3, chords["maj9Closed"].intervals);
+  const c = chord("C", 3, chords["maj9Closed"].rightHand.intervals);
   expect(getKeyboardLabels(c, ["M7", "M9", "M3", "P5"])).toEqual({
     B3: "M7",
     D4: "M9",

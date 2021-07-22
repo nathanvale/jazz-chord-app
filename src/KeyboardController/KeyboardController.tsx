@@ -41,9 +41,9 @@ export const KeyboardController = () => {
   const [rhk, setRightHandKeys] = useState<Chord>();
 
   function playKeys(k: KeyVariant, c: ChordAttributes) {
-    const leftChord = chord(k, 3, ["P1"]);
+    const leftChord = chord(k, 3, c.leftHand.intervals);
     setLeftHandKeys(leftChord);
-    const rightChord = chord(k, 3, c.intervals);
+    const rightChord = chord(k, 3, c.rightHand.intervals);
     setRightHandKeys(rightChord);
   }
 
@@ -75,12 +75,12 @@ export const KeyboardController = () => {
       <Keyboard
         leftHandKeys={
           lhk
-            ? getKeyboardLabels(lhk, selectedChord?.intervalLabels)
+            ? getKeyboardLabels(lhk, selectedChord?.leftHand.intervalLabels)
             : undefined
         }
         rightHandKeys={
           rhk
-            ? getKeyboardLabels(rhk, selectedChord?.intervalLabels)
+            ? getKeyboardLabels(rhk, selectedChord?.rightHand.intervalLabels)
             : undefined
         }
         options={options}

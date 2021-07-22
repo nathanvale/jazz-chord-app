@@ -2,7 +2,7 @@ import { chord } from "./chord";
 import { KeyVariant, ChordVariant, chords } from "./chords";
 
 const createChordMap = (c: ChordVariant) => (note: KeyVariant) => ({
-  [note]: chord(note, 3, chords[c].intervals).simple().toString()
+  [note]: chord(note, 3, chords[c].rightHand.intervals).simple().toString(),
 });
 
 it("should create a maj9 chord", () => {

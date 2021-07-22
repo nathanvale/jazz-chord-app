@@ -3,49 +3,73 @@
 exports[`should create a chord interval map 1`] = `
 Object {
   "maj9": Object {
-    "intervals": Array [
-      "M3",
-      "P5",
-      "M7",
-      "M9",
-    ],
+    "leftHand": Object {
+      "intervals": Array [
+        "P1",
+      ],
+    },
     "name": "maj9",
-    "open": true,
+    "rightHand": Object {
+      "intervals": Array [
+        "M3",
+        "P5",
+        "M7",
+        "M9",
+      ],
+    },
   },
   "maj9Closed": Object {
-    "intervalLabels": Array [
-      "M7",
-      "M9",
-      "M3",
-      "P5",
-    ],
-    "intervals": Array [
-      "M7",
-      "M9",
-      "M10",
-      "M12",
-    ],
+    "leftHand": Object {
+      "intervals": Array [
+        "P1",
+      ],
+    },
     "name": "maj9Closed",
-    "open": true,
+    "rightHand": Object {
+      "intervalLabels": Array [
+        "M7",
+        "M9",
+        "M3",
+        "P5",
+      ],
+      "intervals": Array [
+        "M7",
+        "M9",
+        "M10",
+        "M12",
+      ],
+    },
   },
   "majTriad": Object {
-    "intervals": Array [
-      "P1",
-      "M3",
-      "P5",
-    ],
+    "leftHand": Object {
+      "intervals": Array [
+        "P1",
+      ],
+    },
     "name": "majTriad",
-    "open": false,
+    "rightHand": Object {
+      "intervals": Array [
+        "P1",
+        "M3",
+        "P5",
+      ],
+    },
   },
   "min9": Object {
-    "intervals": Array [
-      "m3",
-      "P5",
-      "m7",
-      "M9",
-    ],
+    "leftHand": Object {
+      "intervals": Array [
+        "P1",
+      ],
+    },
     "name": "min9",
-    "open": true,
+    "rightHand": Object {
+      "intervals": Array [
+        "m3",
+        "P5",
+        "m7",
+        "M9",
+      ],
+    },
   },
 }
 `;
