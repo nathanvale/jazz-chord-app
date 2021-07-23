@@ -38,6 +38,7 @@ function renderKeyboardController() {
     rightHandActiveKeys,
     selectChord,
     selectKey,
+    keyboard,
   };
 }
 

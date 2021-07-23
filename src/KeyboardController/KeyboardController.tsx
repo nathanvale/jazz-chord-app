@@ -119,11 +119,12 @@ export const KeyboardController = () => {
         aria-label="Toggle button keys"
       >
         {keys.map((note) => {
+          const key = note + String(selectedChord ? selectedChord?.name : "");
           return (
             <CustomToggleButton
               role="button"
               aria-label={note}
-              key={note}
+              key={key}
               value={note}
               disabled={!selectedChord}
             >
