@@ -2,6 +2,8 @@ import React from "react";
 import Protected from "./Protected";
 import Public from "./Public";
 import netlifyIdentity from "netlify-identity-widget";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
 import {
   BrowserRouter as Router,
   Route,
@@ -20,6 +22,7 @@ import {
 function AuthExample() {
   return (
     <Router>
+      <CssBaseline />
       <div>
         <AuthButton />
         <ul>
@@ -121,7 +124,6 @@ class Login extends React.Component {
 }
 export default AuthExample;
 
-// import CssBaseline from "@material-ui/core/CssBaseline";
 // import { KeyboardController } from "./KeyboardController/KeyboardController";
 
 // export default function App() {

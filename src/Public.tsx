@@ -1,4 +1,5 @@
 import React from "react";
+import { KeyboardController } from "./KeyboardController/KeyboardController";
 export default function Public() {
-  return <h3>Public</h3>;
+  return <KeyboardController></KeyboardController>;
 }
