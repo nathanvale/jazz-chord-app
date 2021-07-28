@@ -1,11 +1,12 @@
 import React from "react";
-import netlifyIdentity from "netlify-identity-widget";
+import { useIdentityContext } from "react-netlify-identity";
+
 export default function Protected() {
-  const user = netlifyIdentity.currentUser();
+  const { user } = useIdentityContext();
   return (
     <div>
       <h3>Protected Page</h3>
-      You are logged in as <b>{user.email}</b>
+      You are logged in as <b>{user?.email}</b>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import Protected from "./Protected";
 import Public from "./Public";
-import netlifyIdentity from "netlify-identity-widget";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import {
@@ -11,64 +10,45 @@ import {
   Redirect,
   withRouter,
 } from "react-router-dom";
+import {
+  IdentityContextProvider,
+  useIdentityContext,
+} from "react-netlify-identity";
+import { Login } from "./Login";
 
-// copied straight from https://reacttraining.com/react-router/web/example/auth-workflow
-////////////////////////////////////////////////////////////
-// 1. Click the public page
-// 2. Click the protected page
-// 3. Log in
-// 4. Click the back button, note the URL each time
-
-function AuthExample() {
+function App() {
+  const url = "https://www.nathanvale.com/";
   return (
-    <Router>
-      <CssBaseline />
-      <div>
-        <AuthButton />
-        <ul>
-          <li>
-            <Link to="/public">Public Page</Link>
-          </li>
-          <li>
-            <Link to="/protected">Protected Page</Link>
-          </li>
-        </ul>
-        <Route path="/public" component={Public} />
-        <Route path="/login" component={Login} />
-        <PrivateRoute path="/protected" component={Protected} />
-      </div>
-    </Router>
+    <IdentityContextProvider url={url}>
+      <Router>
+        <CssBaseline />
+        <div>
+          <AuthButton />
+          <ul>
+            <li>
+              <Link to="/public">Public Page</Link>
+            </li>
+            <li>
+              <Link to="/protected">Protected Page</Link>
+            </li>
+          </ul>
+          <Route path="/public" component={Public} />
+          <Route path="/login" component={Login} />
+          <PrivateRoute path="/protected" component={Protected} />
+        </div>
+      </Router>
+    </IdentityContextProvider>
   );
 }
 
-const netlifyAuth = {
-  isAuthenticated: false,
-  user: null,
-  authenticate(callback) {
-    this.isAuthenticated = true;
-    netlifyIdentity.open();
-    netlifyIdentity.on("login", (user) => {
-      this.user = user;
-      callback(user);
-    });
-  },
-  signout(callback) {
-    this.isAuthenticated = false;
-    netlifyIdentity.logout();
-    netlifyIdentity.on("logout", () => {
-      this.user = null;
-      callback();
-    });
-  },
-};
-
-const AuthButton = withRouter(({ history }) =>
-  netlifyAuth.isAuthenticated ? (
+const AuthButton = withRouter(({ history }) => {
+  const { isLoggedIn, logoutUser } = useIdentityContext();
+  return isLoggedIn ? (
     <p>
       Welcome!{" "}
       <button
         onClick={() => {
-          netlifyAuth.signout(() => history.push("/"));
+          logoutUser().then((value) => history.push("/"));
         }}
       >
         Sign out
@@ -76,15 +56,16 @@ const AuthButton = withRouter(({ history }) =>
     </p>
   ) : (
     <p>You are not logged in.</p>
-  )
-);
+  );
+});
 
 function PrivateRoute({ component: Component, ...rest }) {
+  const { isLoggedIn } = useIdentityContext();
   return (
     <Route
       {...rest}
       render={(props) =>
-        netlifyAuth.isAuthenticated ? (
+        isLoggedIn ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -99,30 +80,7 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
-class Login extends React.Component {
-  state = { redirectToReferrer: false };
-
-  login = () => {
-    netlifyAuth.authenticate(() => {
-      this.setState({ redirectToReferrer: true });
-    });
-  };
-
-  render() {
-    let { from } = this.props.location.state || { from: { pathname: "/" } };
-    let { redirectToReferrer } = this.state;
-
-    if (redirectToReferrer) return <Redirect to={from} />;
-
-    return (
-      <div>
-        <p>You must log in to view the page at {from.pathname}</p>
-        <button onClick={this.login}>Log in</button>
-      </div>
-    );
-  }
-}
-export default AuthExample;
+export default App;
 
 // import { KeyboardController } from "./KeyboardController/KeyboardController";
 
@@ -134,3 +92,21 @@ export default AuthExample;
 //     </>
 //   );
 // }
+
+// api: e {apiURL: "http://www.nathanvale.com/.netlify/identity", _sameOrigin: true, defaultHeaders: {…}}
+// app_metadata: {provider: "email"}
+// aud: ""
+// audience: undefined
+// confirmation_sent_at: "2021-07-27T04:58:54Z"
+// confirmed_at: "2021-07-27T05:01:18Z"
+// created_at: "2021-07-23T03:13:36Z"
+// email: "nathanvale73@gmail.com"
+// id: "976950b3-6728-43b9-9d31-0c3c23c1273a"
+// role: ""
+// token: {access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2M…UifX0.ok_2IUYwsliUGebuEIq8wkDWUOFutvbG962FvgQewOc", token_type: "bearer", expires_in: 3600, refresh_token: "PE__Ou-TMp_Beg7i19YCDA", expires_at: 1627368296000}
+// updated_at: "2021-07-23T03:13:36Z"
+// url: "http://www.nathanvale.com/.netlify/identity"
+// user_metadata: {full_name: "Nathan Vale"}
+// admin: (...)
+// _details: (...)
+// __proto__: Object
