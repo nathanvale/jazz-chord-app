@@ -27,9 +27,10 @@ declare module "svg-piano" {
   }
   export const keyboard: Pitches[];
   export const accidentals: number[];
-  export const rangeOptions: (
-    range: any[]
-  ) => { keyCount: number; keyOffset: number };
+  export const rangeOptions: (range: any[]) => {
+    keyCount: number;
+    keyOffset: number;
+  };
 
   interface KeySize {
     upperHeight: number;
@@ -59,9 +60,7 @@ declare module "svg-piano" {
   }
   export const getKeySizes: (options: SvgPianoOptions) => KeySize[];
   export const renderKeys: (options: SvgPianoOptions) => RenderKey[];
-  export const renderSVG: (
-    options: SvgPianoOptions
-  ) => {
+  export const renderSVG: (options: SvgPianoOptions) => {
     svg: {
       width: number;
       height: number;

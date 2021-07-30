@@ -1,7 +1,6 @@
 import React from "react";
 import Protected from "./Protected";
 import Public from "./Public";
-import netlifyIdentity from "netlify-identity-widget";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import {
@@ -12,63 +11,45 @@ import {
   withRouter,
 } from "react-router-dom";
 
-// copied straight from https://reacttraining.com/react-router/web/example/auth-workflow
-////////////////////////////////////////////////////////////
-// 1. Click the public page
-// 2. Click the protected page
-// 3. Log in
-// 4. Click the back button, note the URL each time
+import {
+  useIdentityContext,
+  IdentityContextProvider,
+} from "react-netlify-identity";
+import { Login } from "./Login/Login";
 
-function AuthExample() {
+function App() {
+  const url = "https://www.nathanvale.com";
   return (
-    <Router>
-      <CssBaseline />
-      <div>
-        <AuthButton />
-        <ul>
-          <li>
-            <Link to="/public">Public Page</Link>
-          </li>
-          <li>
-            <Link to="/protected">Protected Page</Link>
-          </li>
-        </ul>
-        <Route path="/public" component={Public} />
-        <Route path="/login" component={Login} />
-        <PrivateRoute path="/protected" component={Protected} />
-      </div>
-    </Router>
+    <IdentityContextProvider url={url}>
+      <Router>
+        <CssBaseline />
+        <div>
+          <AuthButton />
+          <ul>
+            <li>
+              <Link to="/public">Public Page</Link>
+            </li>
+            <li>
+              <Link to="/protected">Protected Page</Link>
+            </li>
+          </ul>
+          <Route path="/public" component={Public} />
+          <Route path="/login" component={Login} />
+          <PrivateRoute path="/protected" component={Protected} />
+        </div>
+      </Router>
+    </IdentityContextProvider>
   );
 }
 
-const netlifyAuth = {
-  isAuthenticated: false,
-  user: null,
-  authenticate(callback) {
-    this.isAuthenticated = true;
-    netlifyIdentity.open();
-    netlifyIdentity.on("login", (user) => {
-      this.user = user;
-      callback(user);
-    });
-  },
-  signout(callback) {
-    this.isAuthenticated = false;
-    netlifyIdentity.logout();
-    netlifyIdentity.on("logout", () => {
-      this.user = null;
-      callback();
-    });
-  },
-};
-
-const AuthButton = withRouter(({ history }) =>
-  netlifyAuth.isAuthenticated ? (
+const AuthButton = withRouter(({ history }) => {
+  const { isLoggedIn, logoutUser } = useIdentityContext();
+  return isLoggedIn ? (
     <p>
       Welcome!{" "}
       <button
         onClick={() => {
-          netlifyAuth.signout(() => history.push("/"));
+          logoutUser().then((value) => history.push("/"));
         }}
       >
         Sign out
@@ -76,15 +57,16 @@ const AuthButton = withRouter(({ history }) =>
     </p>
   ) : (
     <p>You are not logged in.</p>
-  )
-);
+  );
+});
 
 function PrivateRoute({ component: Component, ...rest }) {
+  const { user } = useIdentityContext();
   return (
     <Route
       {...rest}
       render={(props) =>
-        netlifyAuth.isAuthenticated ? (
+        user ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -99,38 +81,4 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
-class Login extends React.Component {
-  state = { redirectToReferrer: false };
-
-  login = () => {
-    netlifyAuth.authenticate(() => {
-      this.setState({ redirectToReferrer: true });
-    });
-  };
-
-  render() {
-    let { from } = this.props.location.state || { from: { pathname: "/" } };
-    let { redirectToReferrer } = this.state;
-
-    if (redirectToReferrer) return <Redirect to={from} />;
-
-    return (
-      <div>
-        <p>You must log in to view the page at {from.pathname}</p>
-        <button onClick={this.login}>Log in</button>
-      </div>
-    );
-  }
-}
-export default AuthExample;
-
-// import { KeyboardController } from "./KeyboardController/KeyboardController";
-
-// export default function App() {
-//   return (
-//     <>
-//       <CssBaseline />
-//       <KeyboardController></KeyboardController>
-//     </>
-//   );
-// }
+export default App;
