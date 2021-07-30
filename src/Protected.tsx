@@ -1,5 +1,5 @@
 import React from "react";
-import { useIdentityContext } from "react-netlify-identity";
+import { useIdentityContext } from "react-netlify-identity-gotrue";
 
 export default function Protected() {
   const { user } = useIdentityContext();
