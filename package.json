@@ -22,7 +22,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.12.0",
-    "react-netlify-identity-gotrue": "^0.3.5",
+    "react-netlify-identity": "^0.2.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "scientific-notation": "^1.0.2"

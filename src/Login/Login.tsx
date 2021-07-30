@@ -3,14 +3,16 @@ import { styled } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import { Controller, useForm } from "react-hook-form";
-import { useIdentityContext } from "react-netlify-identity-gotrue";
+import { useIdentityContext } from "react-netlify-identity";
 import Alert from "@material-ui/core/Alert";
 import LoadingButton from "@material-ui/lab/LoadingButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Stack from "@material-ui/core/Stack";
 import Link from "@material-ui/core/Link";
-import AlertTitle from "@material-ui/lab/AlertTitle";
+import AlertTitle from "@material-ui/core/AlertTitle";
 import { useLocation, useHistory } from "react-router-dom";
+
+export const alertTitle = "Let's try that again";
 
 interface FormData {
   email: string;
@@ -22,7 +24,7 @@ const CustomContainer = styled(Container)(({ theme }) => ({
 }));
 
 export const Login = () => {
-  const { login } = useIdentityContext();
+  const { loginUser } = useIdentityContext();
   const { handleSubmit, control } = useForm<FormData>();
   const [msg, setMsg] = React.useState("");
   const [loading, setLoading] = React.useState(false);
@@ -32,14 +34,13 @@ export const Login = () => {
   const onSubmit = async ({ email, password }: FormData) => {
     setLoading(true);
     setMsg("");
-    return await login({ email, password })
+    return await loginUser(email, password)
       .then((user) => {
-        console.log(user);
         setLoading(false);
         setRedirectToReferrer(true);
       })
       .catch((err) => {
-        console.error(err) || setMsg(err.message);
+        setMsg(err.message);
         setLoading(false);
       });
   };
@@ -71,7 +72,7 @@ export const Login = () => {
         <Stack spacing={2}>
           {msg && (
             <Alert severity="error" variant="outlined">
-              <AlertTitle>Let's try that again</AlertTitle>
+              <AlertTitle>{alertTitle}</AlertTitle>
               {msg}
             </Alert>
           )}
@@ -81,8 +82,12 @@ export const Login = () => {
             defaultValue=""
             rules={{
               required: "Email required",
-              pattern:
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              pattern: {
+                message: "Invalid email address",
+                value:
+                  // eslint-disable-next-line no-useless-escape
+                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              },
             }}
             render={({ field: { onChange, value }, fieldState: { error } }) => (
               <TextField
@@ -91,6 +96,7 @@ export const Login = () => {
                 fullWidth
                 variant="filled"
                 value={value}
+                disabled={loading}
                 onChange={onChange}
                 error={!!error}
                 helperText={error ? error.message : null}
@@ -111,6 +117,7 @@ export const Login = () => {
                 variant="filled"
                 value={value}
                 onChange={onChange}
+                disabled={loading}
                 error={!!error}
                 helperText={error ? error.message : null}
                 InputProps={{
@@ -118,7 +125,7 @@ export const Login = () => {
                     <InputAdornment position="end">
                       <Link
                         sx={{ cursor: "pointer", userSelect: "none" }}
-                        aria-label="toggle password visibility"
+                        aria-label="Toggle password visibility"
                         onMouseDown={handleTogglePassword}
                       >
                         {showPassword ? "Hide" : "Show"}

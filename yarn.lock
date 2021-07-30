@@ -5962,7 +5962,7 @@ globby@^6.1.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-gotrue-js@^0.9.29:
+gotrue-js@^0.9.25, gotrue-js@^0.9.29:
   version "0.9.29"
   resolved "https://registry.yarnpkg.com/gotrue-js/-/gotrue-js-0.9.29.tgz#08e62184d4eaadcd87f95cb6e49e3c4a9742a052"
   integrity sha512-NSFwJlFfWxHd1zHDitysbh+amFPHBAyQG1YmecZJTaSe8TlC7Wja1ewdUBikfJBblN3SqghS6aViMd+Q/pPzGQ==
@@ -9825,10 +9825,12 @@ react-is@^17.0.0, react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-netlify-identity-gotrue@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/react-netlify-identity-gotrue/-/react-netlify-identity-gotrue-0.3.5.tgz#f66fbe6c4361531d687762884ae02320da0a20cf"
-  integrity sha512-ocVyh3Z1v5PZOkFkTjpQCbi7tkBaE6zIc+Nu47vUI86vUml7ZCTFN9rBn9FvZDrdc/3DRT/qUdAiya0FPjNTHw==
+react-netlify-identity@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/react-netlify-identity/-/react-netlify-identity-0.2.5.tgz#8e7a537fe3b3aecf729a9250fe13e232004e330e"
+  integrity sha512-sesi2xI0Me1trECgvxZIweJ+Edx1zoZavY1NjgCTE7bbKhaaw2b2Z7okhdg2YwBj0iRIVSe9qtuSj8gzY5jaNg==
+  dependencies:
+    gotrue-js "^0.9.25"
 
 react-refresh@^0.8.3:
   version "0.8.3"

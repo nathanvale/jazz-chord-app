@@ -11,15 +11,16 @@ import {
   withRouter,
 } from "react-router-dom";
 
-import NetlifyIdentityContext, {
+import {
   useIdentityContext,
-} from "react-netlify-identity-gotrue";
+  IdentityContextProvider,
+} from "react-netlify-identity";
 import { Login } from "./Login/Login";
 
 function App() {
   const url = "https://www.nathanvale.com";
   return (
-    <NetlifyIdentityContext url={url}>
+    <IdentityContextProvider url={url}>
       <Router>
         <CssBaseline />
         <div>
@@ -37,18 +38,18 @@ function App() {
           <PrivateRoute path="/protected" component={Protected} />
         </div>
       </Router>
-    </NetlifyIdentityContext>
+    </IdentityContextProvider>
   );
 }
 
 const AuthButton = withRouter(({ history }) => {
-  const { user, logout } = useIdentityContext();
-  return user ? (
+  const { isLoggedIn, logoutUser } = useIdentityContext();
+  return isLoggedIn ? (
     <p>
       Welcome!{" "}
       <button
         onClick={() => {
-          logout().then((value) => history.push("/"));
+          logoutUser().then((value) => history.push("/"));
         }}
       >
         Sign out
