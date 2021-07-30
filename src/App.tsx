@@ -61,12 +61,12 @@ const AuthButton = withRouter(({ history }) => {
 });
 
 function PrivateRoute({ component: Component, ...rest }) {
-  const { user } = useIdentityContext();
+  const { isLoggedIn } = useIdentityContext();
   return (
     <Route
       {...rest}
       render={(props) =>
-        user ? (
+        isLoggedIn ? (
           <Component {...props} />
         ) : (
           <Redirect

@@ -10,7 +10,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Stack from "@material-ui/core/Stack";
 import Link from "@material-ui/core/Link";
 import AlertTitle from "@material-ui/core/AlertTitle";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, Redirect } from "react-router-dom";
 
 export const alertTitle = "Let's try that again";
 
@@ -24,12 +24,11 @@ const CustomContainer = styled(Container)(({ theme }) => ({
 }));
 
 export const Login = () => {
-  const { loginUser } = useIdentityContext();
+  const { loginUser, isLoggedIn } = useIdentityContext();
   const { handleSubmit, control } = useForm<FormData>();
   const [msg, setMsg] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
-  const [redirectToReferrer, setRedirectToReferrer] = React.useState(false);
 
   const onSubmit = async ({ email, password }: FormData) => {
     setLoading(true);
@@ -37,7 +36,6 @@ export const Login = () => {
     return await loginUser(email, password)
       .then((user) => {
         setLoading(false);
-        setRedirectToReferrer(true);
       })
       .catch((err) => {
         setMsg(err.message);
@@ -53,17 +51,13 @@ export const Login = () => {
   }, []);
 
   const click = () => loginProvider("google");
-  const history = useHistory();
 
   const { state } = useLocation<{
     from: { pathname: string };
   }>();
   let { from } = state || { from: { pathname: "/" } };
-
-  if (redirectToReferrer) {
-    history.replace(from.pathname);
-    setRedirectToReferrer(false);
-    return null;
+  if (isLoggedIn) {
+    return <Redirect to={from.pathname} />;
   }
 
   return (
