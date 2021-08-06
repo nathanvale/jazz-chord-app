@@ -2,13 +2,26 @@ import React from "react";
 import { alertTitle, Login } from "./Login";
 import { renderWithRouter, wait } from "../test-utils";
 import { screen, fireEvent, within } from "@testing-library/react";
-import {
-  useIdentityContext,
-  ReactNetlifyIdentityAPI,
-} from "react-netlify-identity";
+import { useIdentityContext } from "react-netlify-identity";
 
-function renderLogin() {
-  const { history } = renderWithRouter(<Login />, { route: "/login" });
+import * as hooks from "../hooks/useLocalStorage";
+
+let mockIsLoggedIn = false;
+let mockLocalKey = "localKey";
+const mockLoginUser = jest.fn();
+jest.mock("react-netlify-identity", () => ({
+  __esModule: true, // this property makes it work
+  useIdentityContext: () => ({
+    isLoggedIn: mockIsLoggedIn,
+    loginUser: mockLoginUser,
+  }),
+}));
+
+const setLocalKeyMock = jest.fn();
+hooks.useLocalStorage = () => [mockLocalKey, setLocalKeyMock];
+
+function renderLogin(state?: { from: { pathname: string } }) {
+  const { history } = renderWithRouter(<Login />, { state, route: "login" });
   const loginButton = screen.getByRole("button", { name: /^Log In/i });
   const emailTextField = screen.getByRole("textbox", { name: /^Email/i });
   const passwordTextField = screen.getByLabelText(/^Password/i);
@@ -29,6 +42,7 @@ function renderLogin() {
     passwordTextField,
     history,
     useLoginUser,
+    setLocalKeyMock,
   };
 }
 
@@ -63,43 +77,45 @@ it("should show email invalid error message", async () => {
 });
 
 it("should show loading spinner on button click when logging in", async () => {
+  mockLoginUser.mockReturnValue(
+    new Promise((response) => setTimeout(response, 300))
+  );
   const { loginButton, useLoginUser, emailTextField, passwordTextField } =
     renderLogin();
-  const { loginUser } = useIdentityContext();
-  (loginUser as jest.Mock<any, any>).mockReturnValue(
-    new Promise((response) => setTimeout(response, 150))
-  );
-  const { email, password } = await useLoginUser(loginUser);
-  await wait(100);
+  const { email, password } = await useLoginUser(mockLoginUser);
   const spinner = screen.getByRole("progressbar");
   expect(spinner).toBeInTheDocument();
   expect(loginButton).toBeDisabled();
   expect(emailTextField).toBeDisabled();
   expect(passwordTextField).toBeDisabled();
-  expect(loginUser).toBeCalledWith(email, password);
+  expect(mockLoginUser).toBeCalledWith(email, password);
 });
 
 it("should redirect to previous route on successful login", async () => {
-  const { loginButton, useLoginUser, history } = renderLogin();
   const state = { from: { pathname: "/previous-route" } };
-  history.replace("/login", state);
-  expect(history.location.pathname).toEqual("/login");
+  const { loginButton, useLoginUser, history } = renderLogin(state);
   const { loginUser } = useIdentityContext();
   (loginUser as jest.Mock<any, any>).mockResolvedValue(undefined);
+  mockIsLoggedIn = true;
+  mockLocalKey = state.from.pathname;
   const { email, password } = await useLoginUser(loginUser);
   expect(loginButton).toBeEnabled();
   expect(loginUser).toBeCalledWith(email, password);
   expect(history.location.pathname).toEqual(state.from.pathname);
+  mockIsLoggedIn = false;
 });
 
 it("should redirect to default route if no previous route on successful login", async () => {
   const { loginButton, history, useLoginUser } = renderLogin();
   const { loginUser } = useIdentityContext();
   (loginUser as jest.Mock<any, any>).mockResolvedValue(undefined);
+  mockLocalKey = "/";
+  mockIsLoggedIn = true;
   const { email, password } = await useLoginUser(loginUser);
   expect(loginButton).toBeEnabled();
   expect(loginUser).toBeCalledWith(email, password);
   expect(history.location.pathname).toEqual("/");
+  mockIsLoggedIn = false;
 });
 
 it("should throw an error on unsuccessful login", async () => {

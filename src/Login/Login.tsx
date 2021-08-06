@@ -11,6 +11,7 @@ import Stack from "@material-ui/core/Stack";
 import Link from "@material-ui/core/Link";
 import AlertTitle from "@material-ui/core/AlertTitle";
 import { useLocation, Redirect } from "react-router-dom";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const alertTitle = "Let's try that again";
 
@@ -29,6 +30,18 @@ export const Login = () => {
   const [msg, setMsg] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
+
+  const [localKey, setLocalKey] = useLocalStorage("redirect", "");
+
+  const { state } = useLocation<{
+    from: { pathname: string };
+  }>();
+  let { from } = state || { from: { pathname: "/" } };
+
+  React.useEffect(() => {
+    setLocalKey(from.pathname);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async ({ email, password }: FormData) => {
     setLoading(true);
@@ -52,12 +65,8 @@ export const Login = () => {
 
   const click = () => loginProvider("google");
 
-  const { state } = useLocation<{
-    from: { pathname: string };
-  }>();
-  let { from } = state || { from: { pathname: "/" } };
   if (isLoggedIn) {
-    return <Redirect to={from.pathname} />;
+    return <Redirect to={localKey} />;
   }
 
   return (

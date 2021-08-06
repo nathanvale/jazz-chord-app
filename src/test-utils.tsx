@@ -7,8 +7,10 @@ export function renderWithRouter(
   {
     route = "/",
     history = createMemoryHistory({ initialEntries: [route] }),
+    state,
   } = {}
 ) {
+  if (state) history.push(route, state);
   return {
     ...render(<Router history={history}>{ui}</Router>),
     history,
