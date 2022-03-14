@@ -18,7 +18,7 @@ jest.mock("react-netlify-identity", () => ({
 }));
 
 const setLocalKeyMock = jest.fn();
-hooks.useLocalStorage = () => [mockLocalKey, setLocalKeyMock];
+(hooks as any).useLocalStorage = () => [mockLocalKey, setLocalKeyMock];
 
 function renderLogin(state?: { from: { pathname: string } }) {
   const { history } = renderWithRouter(<Login />, { state, route: "login" });
@@ -26,7 +26,7 @@ function renderLogin(state?: { from: { pathname: string } }) {
   const emailTextField = screen.getByRole("textbox", { name: /^Email/i });
   const passwordTextField = screen.getByLabelText(/^Password/i);
 
-  async function useLoginUser(loginUser: ReactNetlifyIdentityAPI["loginUser"]) {
+  async function useLoginUser(loginUser: any) {
     const email = "nathanvale73@gmail.com";
     const password = "password";
     fireEvent.change(emailTextField, { target: { value: email } });

@@ -1,5 +1,6 @@
 /* eslint-disable one-var */
 declare module "teoria" {
+  export type IntervalVariant = any;
   export type IntervalConstructor = (
     interval: IntervalCoord | IntervalVariant
   ) => Note;
@@ -61,5 +62,4 @@ declare module "teoria" {
   */
 
   export const note: (name: NoteVariant, duration?: any) => NoteInstance;
-
-  
+}

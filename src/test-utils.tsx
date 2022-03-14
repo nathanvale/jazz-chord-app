@@ -3,12 +3,12 @@ import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 
 export function renderWithRouter(
-  ui,
+  ui: any,
   {
     route = "/",
     history = createMemoryHistory({ initialEntries: [route] }),
     state,
-  } = {}
+  }: any = {}
 ) {
   if (state) history.push(route, state);
   return {

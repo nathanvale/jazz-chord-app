@@ -60,7 +60,7 @@ const AuthButton = withRouter(({ history }) => {
   );
 });
 
-function PrivateRoute({ component: Component, ...rest }) {
+function PrivateRoute({ component: Component, ...rest }: any) {
   const { isLoggedIn } = useIdentityContext();
   return (
     <Route
