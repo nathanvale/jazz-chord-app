@@ -475,7 +475,7 @@ export class KeyboardModel {
     // console.log(keys);
     return Object.keys(keys).map((keyName) => {
       const key = this._keysMap[keyName].key; //?
-      let fill = options?.fill;
+      let fill = options?.fill; //?
 
       if (!fill) {
         if (key.sharp) {
@@ -496,7 +496,7 @@ export class KeyboardModel {
         ...textElements,
         activeKey: {
           ...polygon,
-          style: { fill: "blue", strokeWidth: 0 },
+          style: { fill, strokeWidth: 0 },
         },
       };
     });

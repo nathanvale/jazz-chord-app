@@ -42,6 +42,21 @@ function renderKeyboardController() {
   };
 }
 
+it("should have green left hand keys", () => {
+  const { leftHandActiveKeys, rightHandActiveKeys, selectChord, selectKey } =
+    renderKeyboardController();
+  selectChord("maj9");
+  selectKey("C");
+  const leftHandKeys = leftHandActiveKeys.getAllByTestId("left hand key");
+  const rightHandKeys = rightHandActiveKeys.getAllByTestId("right hand key");
+  rightHandKeys.forEach((key) => {
+    expect(key).toHaveStyle("fill: blue; stroke-width: 0;");
+  });
+  leftHandKeys.forEach((key) => {
+    expect(key).toHaveStyle("fill: green; stroke-width: 0;");
+  });
+});
+
 it("should have all toggle button chords", () => {
   const { toggleButtonChords } = renderKeyboardController();
   let buttons = within(toggleButtonChords).getAllByRole("button");
@@ -72,7 +87,7 @@ it("should have disabled keys when no chord is selected", () => {
   });
 });
 
-it("should render chords with custom interval labels ", () => {
+it("should render chords with custom interval labels", () => {
   const { selectChord, selectKey, rightHandActiveKeys } =
     renderKeyboardController();
   selectChord("maj9Closed");

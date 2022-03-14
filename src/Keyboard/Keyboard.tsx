@@ -41,19 +41,27 @@ export const Keyboard = ({
     if (optionsChanged) {
       const km = new KeyboardModel(options);
       setKeyboardModel(km);
-      setLeftHandKeys(km.getLeftHandkeys(leftHandKeys || {}));
-      setRightHandKeys(km.getRightHandKeys(rightHandKeys || {}));
+      setLeftHandKeys(
+        km.getLeftHandkeys(leftHandKeys || {}, { fill: "green" })
+      );
+      setRightHandKeys(
+        km.getRightHandKeys(rightHandKeys || {}, { fill: "blue" })
+      );
     }
 
     if (prevLeftHandKeys !== JSON.stringify(leftHandKeys) && !optionsChanged) {
-      setLeftHandKeys(keyboardModel.getLeftHandkeys(leftHandKeys || {}));
+      setLeftHandKeys(
+        keyboardModel.getLeftHandkeys(leftHandKeys || {}, { fill: "green" })
+      );
     }
 
     if (
       prevRightHandKeys !== JSON.stringify(rightHandKeys) &&
       !optionsChanged
     ) {
-      setRightHandKeys(keyboardModel.getRightHandKeys(rightHandKeys || {}));
+      setRightHandKeys(
+        keyboardModel.getRightHandKeys(rightHandKeys || {}, { fill: "blue" })
+      );
     }
   }, [
     prevOptions,
@@ -75,14 +83,20 @@ export const Keyboard = ({
       <g aria-label="Keys">
         {polygons &&
           polygons.map(({ polygon }, index) => {
-            return [polygon && <polygon {...polygon} key={`p${index}`} />];
+            return polygon && <polygon {...polygon} key={`p${index}`} />;
           })}
       </g>
       <g aria-label="Left hand active keys">
         {lhk &&
           lhk.map(({ activeKey, text1, text2 }, index: number) => {
             return [
-              activeKey && <polygon {...activeKey} key={`lhk${index}`} />,
+              activeKey && (
+                <polygon
+                  data-testid="left hand key"
+                  {...activeKey}
+                  key={`lhk${index}`}
+                />
+              ),
               text1 && (
                 <text {...text1} key={`lhl1${index}`}>
                   {text1.value}
@@ -100,7 +114,13 @@ export const Keyboard = ({
         {rhk &&
           rhk.map(({ activeKey, text1, text2 }, index) => {
             return [
-              activeKey && <polygon {...activeKey} key={`rhk${index}`} />,
+              activeKey && (
+                <polygon
+                  data-testid="right hand key"
+                  {...activeKey}
+                  key={`rhk${index}`}
+                />
+              ),
               text1 && (
                 <text {...text1} key={`lhl1${index}`}>
                   {text1.value}
