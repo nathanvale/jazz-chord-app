@@ -303,7 +303,7 @@ export function getTextElements(
   const baseText = {
     textAnchor: "middle",
     fontSize: "10px",
-    fill,
+    fill: "white",
     fontWeight: 600,
     fontFamily,
     value: "",
