@@ -293,7 +293,7 @@ export function getTextElements(
     upperWidth,
   } = key;
 
-  const { top, fill, fontFamily } = options;
+  const { top, fontFamily } = options;
   const magic = 14.5;
   const radius = (key.scaleX * (magic - strokeWidth * 2)) / 2;
   const w = key.lowerWidth || key.upperWidth;
