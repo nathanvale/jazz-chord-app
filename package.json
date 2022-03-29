@@ -2,6 +2,7 @@
   "name": "react",
   "version": "1.0.0",
   "description": "React example starter project",
+  "license": "MIT",
   "keywords": [
     "react",
     "starter"
@@ -13,8 +14,6 @@
     "@material-ui/core": "^5.0.0-beta.2",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^5.0.0-alpha.41",
-    "@testing-library/jest-dom": "5.14.1",
-    "@testing-library/react": "12.0.0",
     "gotrue-js": "^0.9.29",
     "helmholtz": "^2.0.1",
     "interval-coords": "^1.1.1",
