@@ -124,11 +124,8 @@ export const Keyboard = ({
   }, [handleScroll]);
 
   return (
-    <div
-      style={{ width: "100%", overflowX: "scroll" }}
-      ref={containerRef as any}
-    >
-      <div style={{ overflowX: "scroll" }} ref={ref as any}>
+    <div ref={containerRef as any}>
+      <div style={{ overflowX: "hidden" }} ref={ref as any}>
         <svg width={width} height={height} aria-label="Keyboard">
           <g aria-label="Keys">
             {polygons &&
