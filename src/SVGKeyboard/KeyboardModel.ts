@@ -484,6 +484,10 @@ export class KeyboardModel {
   ): RenderActiveKey[] {
     // console.log(keys);
     return Object.keys(keys).map((keyName) => {
+      if (!this._keysMap[keyName])
+        throw new Error(
+          "Cant render a key out of the range of the keyboard model."
+        );
       const key = this._keysMap[keyName].key; //?
       let fill = options?.fill; //?
 
