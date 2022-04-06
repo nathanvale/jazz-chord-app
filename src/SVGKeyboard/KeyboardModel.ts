@@ -79,6 +79,8 @@ export interface RenderActiveKey {
   };
   text1: RenderActiveText;
   text2: RenderActiveText;
+  x: number;
+  width: number;
 }
 
 // https://de.wikipedia.org/wiki/Datei:Pianoteilung.svg
@@ -445,6 +447,14 @@ export class KeyboardModel {
     return this._keys;
   }
 
+  getXRange() {
+    const keys = this._keys; //?
+    const firstKey = keys[0].key;
+    const lastKey = keys[keys.length - 1].key;
+    const range = [firstKey.offsetX, lastKey.offsetX + lastKey.lowerWidth];
+    return range; //?
+  }
+
   getLeftHandkeys(keys: Partial<KeyboardOptions>, options: TextOptions = {}) {
     return this._getLabels(keys, options);
   }
@@ -492,8 +502,12 @@ export class KeyboardModel {
         textElements.text2.value = value as string;
       }
       const polygon = this._keysMap[keyName].polygon;
+      const x = Math.round(key.offsetX * 100) / 100 || 0;
+      const width = key.lowerWidth;
       return {
         ...textElements,
+        x,
+        width,
         activeKey: {
           ...polygon,
           style: { fill, strokeWidth: 0 },
@@ -503,14 +517,14 @@ export class KeyboardModel {
   }
 }
 
-//const k = new KeyboardModel({ range: ["C3", "C6"] });
+// const k = new KeyboardModel({ range: ["C3", "C6"] });
 
 // const leftHandLabels = { B3: "P1" }; //?
-//const rightHandLabels = { Fb3: "m3", Ab3: "P5", Cb4: "m7", Eb4: "M9" }; //?
+// const rightHandLabels = { Fb3: "m3", Ab3: "P5", Cb4: "m7", Eb4: "M9" }; //?
 
 // console.log(k.getOptions());
 // console.log(k.getSVGDimensions());
-// console.log(k.getPolygons());
-// console.log(k.getLeftHandLabels(leftHandLabels));
-//console.log(k.getRightHandKeys(rightHandLabels));
-// console.log(k.getLeftHandKeys(leftHandLabels));
+// console.log(k.getSVGDimensions());
+// console.log(k.getPolygons()); //?
+
+// console.log(k.getXRange()); //?
