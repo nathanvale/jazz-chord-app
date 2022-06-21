@@ -27,13 +27,13 @@ function App() {
           <AuthButton />
           <ul>
             <li>
-              <Link to="/public">Public Page</Link>
+              <Link to="/">Home Page</Link>
             </li>
             <li>
-              <Link to="/protected">Protected Page</Link>
+              <Link to="/login">Login</Link>
             </li>
           </ul>
-          <Route path="/public" component={Public} />
+          <Route exact path="/" component={Public} />
           <Route path="/login" component={Login} />
           <PrivateRoute path="/protected" component={Protected} />
         </div>
