@@ -1,6 +1,10 @@
 node_modules/
 settings.json
-
+build
 
 # Local Netlify folder
 .netlify
+
+# Cypress
+cypress/screenshots/
+cypress/videos/

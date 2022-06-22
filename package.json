@@ -32,13 +32,18 @@
     "@babel/runtime": "7.13.8",
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
+    "@testing-library/cypress": "^8.0.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.1.8",
+    "cypress": "^10.1.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-jest-dom": "^3.9.0",
     "git-cz": "^4.7.6",
     "husky": "^7.0.4",
+    "netlify-plugin-cypress": "^2.2.0",
+    "start-server-and-test": "^1.14.0",
     "typescript": "4.6.2"
   },
   "scripts": {
@@ -50,7 +55,10 @@
     "tsc": "tsc --watch",
     "lint": "eslint --max-warnings=0 .",
     "prepare": "husky install",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "cy:run": "cypress run",
+    "cy:open": "cypress open",
+    "cy:ci": "start-server-and-test start http://localhost:3000 cy:run"
   },
   "browserslist": [
     ">0.2%",
@@ -62,17 +70,33 @@
     "extends": [
       "react-app",
       "react-app/jest",
-      "plugin:testing-library/react",
-      "plugin:jest-dom/recommended"
+      "plugin:jest-dom/recommended",
+      "plugin:testing-library/react"
     ],
     "rules": {
       "no-console": "warn"
-    }
+    },
+    "overrides": [
+      {
+        "extends": [
+          "plugin:cypress/recommended"
+        ],
+        "files": [
+          "cypress/**/*.ts"
+        ],
+        "rules": {
+          "testing-library/prefer-screen-queries": "off",
+          "testing-library/await-async-query": "off"
+        }
+      }
+    ]
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
+    "**/*.{js,jsx,ts,tsx}": [
       "eslint --max-warnings=0 --fix"
+    ],
+    "**/*.{js,jsx,ts,tsx,json,css,md}": [
+      "prettier --write"
     ]
   },
   "husky": {
