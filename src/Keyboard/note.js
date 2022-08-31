@@ -1,9 +1,10 @@
-var scientific = require("scientific-notation");
-var helmholtz = require("helmholtz");
-var pitchFq = require("pitch-fq");
-var knowledge = require("./knowledge");
-var vector = require("./vector");
-var Interval = require("./interval");
+import scientific from "scientific-notation";
+import helmholtz from "helmholtz";
+import pitchFq from "pitch-fq";
+import knowledge from "./knowledge.ts";
+
+import vector from "./vector.js";
+import Interval from "./interval.js";
 
 function pad(str, ch, len) {
   for (; len > 0; len--) {
@@ -13,7 +14,7 @@ function pad(str, ch, len) {
   return str;
 }
 
-export function Note(coord, duration) {
+function Note(coord, duration) {
   if (!(this instanceof Note)) return new Note(coord, duration);
   duration = duration || {};
 
@@ -232,3 +233,5 @@ Note.fromFrequency = function (fq, concertPitch) {
 Note.fromMIDI = function (note) {
   return Note.fromKey(note - 20);
 };
+
+export { Note };

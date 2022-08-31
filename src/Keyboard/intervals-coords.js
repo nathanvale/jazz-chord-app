@@ -17,7 +17,8 @@ var baseIntervals = [
   [1, 0],
 ];
 
-module.exports = function (simple) {
+// eslint-disable-next-line import/no-anonymous-default-export
+export default function (simple) {
   var parser = simple.match(pattern);
 
   if (!parser) return null;
@@ -41,7 +42,7 @@ module.exports = function (simple) {
     sign * (base[0] + octaves + sharp[0] * alt),
     sign * (base[1] + sharp[1] * alt),
   ];
-};
+}
 
 // Copy to avoid overwriting internal base intervals
-module.exports.coords = baseIntervals.slice(0);
+// module.exports.coords = baseIntervals.slice(0);

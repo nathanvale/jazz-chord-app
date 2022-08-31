@@ -1,4 +1,4 @@
-module.exports = {
+const vector = {
   add: function (note, interval) {
     return [note[0] + interval[0], note[1] + interval[1]];
   },
@@ -17,3 +17,5 @@ module.exports = {
     return coord[0] + coord[1];
   },
 };
+
+export default vector;
