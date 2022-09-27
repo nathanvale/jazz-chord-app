@@ -1,10 +1,12 @@
 import { NetlifyAPI } from "netlify";
 import cypress from "cypress";
 import fetch from "node-fetch";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 // eslint-disable-next-line no-console
 console.log(process.env);
-const client = new NetlifyAPI("1234myAccessToken");
+const client = new NetlifyAPI(process.env.NETLIFY_TOKEN);
 // eslint-disable-next-line no-console
 console.log(client);
 
