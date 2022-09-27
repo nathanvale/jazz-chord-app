@@ -85,7 +85,7 @@ const config = {
       }
       return data;
     } else {
-      await fetch(
+      const response = await fetch(
         `https://api.github.com/repos/nathanvale/jazz-chord-app/statuses/${sha}`,
         {
           method: "POST",
@@ -100,6 +100,15 @@ const config = {
           }),
         }
       );
+      const data = await response.json();
+      const { status, statusText, ok } = response;
+
+      if (!ok) {
+        const error = new Error(`${status} ${statusText}`);
+        error.data = data;
+        throw error;
+      }
+      return data;
     }
   },
 };
