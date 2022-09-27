@@ -50,7 +50,7 @@ const config = {
     // eslint-disable-next-line no-console
     console.log("WTF?:", result);
 
-    if (result.totalFailed) {
+    if (result.totalFailed > 0) {
       const sha = utils.git.commits[0].sha;
       const authorization = `token ${netlifyConfig.build.environment.GITHUB_TOKEN}`;
       const deployURL = netlifyConfig.build.environment.DEPLOY_PRIME_URL;
