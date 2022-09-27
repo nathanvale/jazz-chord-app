@@ -47,6 +47,9 @@ const config = {
       text,
     });
 
+    // eslint-disable-next-line no-console
+    console.log("WTF?:", result);
+
     if (result.totalFailed) {
       const sha = utils.git.commits[0].sha;
       const authorization = `token ${netlifyConfig.build.environment.GITHUB_TOKEN}`;
@@ -57,7 +60,7 @@ const config = {
       // eslint-disable-next-line no-console
       console.log(sites);
 
-      const rollback = client.rollbackSiteDeploy({
+      const rollback = await client.rollbackSiteDeploy({
         site_id: process.env.SITE_ID,
       });
 
