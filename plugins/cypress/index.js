@@ -56,9 +56,11 @@ const config = {
       const deployURL = netlifyConfig.build.environment.DEPLOY_PRIME_URL;
 
       // Fetch sites
-      const sites = await client.listSites();
+      const deploys = await client.deploys({
+        site_id: process.env.SITE_ID,
+      });
       // eslint-disable-next-line no-console
-      console.log("Fetch sites:", sites);
+      console.log("Fetch deploys:", deploys);
 
       const rollback = await client.rollbackSiteDeploy({
         site_id: process.env.SITE_ID,
