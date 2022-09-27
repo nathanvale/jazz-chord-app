@@ -60,10 +60,20 @@ const config = {
         site_id: process.env.SITE_ID,
       });
       // eslint-disable-next-line no-console
-      console.log("Fetch deploys:", deploys);
+      const mainBranchCommitRef = "e8ba22b42f5d0f1c8343a55f3e1467e453662857";
+      const mainBranch = "main";
 
-      const rollback = await client.rollbackSiteDeploy({
+      const deploy = deploys.find(
+        (element) =>
+          element.commit_ref === mainBranchCommitRef &&
+          element.branch === mainBranch
+      );
+      // eslint-disable-next-line no-console
+      console.log("Fetch main deploy:", deploy);
+
+      const rollback = await client.restoreSiteDeploy({
         site_id: process.env.SITE_ID,
+        deploy_id: deploy.id,
       });
 
       // eslint-disable-next-line no-console
