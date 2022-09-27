@@ -77,7 +77,7 @@ const config = {
           body: JSON.stringify({
             state: "failure",
             target_url: deployURL,
-            context: "cypress",
+            context: "Cypress",
             description: `${result.totalFailed} Cypress tests failed}`,
           }),
         }
