@@ -5,16 +5,12 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 // eslint-disable-next-line no-console
-console.log(process.env);
 const client = new NetlifyAPI(process.env.NETLIFY_TOKEN);
 // eslint-disable-next-line no-console
-console.log(client);
 
 const config = {
-  onPreBuild: () => {
-    // eslint-disable-next-line no-console
-    console.log("Hello, world!");
-  },
+  onPreBuild: () => {},
+
   onSuccess: async ({ netlifyConfig, utils }) => {
     const result = await cypress.run({
       config: {
@@ -41,43 +37,27 @@ const config = {
       🚫 Skipped tests: ${result.totalSkipped}
   `;
 
+    // eslint-disable-next-line no-console
+    console.log(text);
+
     utils.status.show({
       title: "cypress plugin",
       summary: summary.join(" "),
       text,
     });
 
-    // eslint-disable-next-line no-console
-    console.log("WTF?:", result);
+    const sha = utils.git.commits[0].sha;
+    const authorization = `token ${netlifyConfig.build.environment.GITHUB_TOKEN}`;
+    const deployURL = netlifyConfig.build.environment.DEPLOY_PRIME_URL;
 
     if (result.totalFailed > 0) {
-      const sha = utils.git.commits[0].sha;
-      const authorization = `token ${netlifyConfig.build.environment.GITHUB_TOKEN}`;
-      const deployURL = netlifyConfig.build.environment.DEPLOY_PRIME_URL;
-
-      // Fetch sites
-      const deploys = await client.listSiteDeploys({
+      const deploy = await client.getDeploy({
         site_id: process.env.SITE_ID,
-      });
-      // eslint-disable-next-line no-console
-      const mainBranchCommitRef = "e8ba22b42f5d0f1c8343a55f3e1467e453662857";
-      const mainBranch = "main";
-
-      const deploy = deploys.find(
-        (element) =>
-          element.commit_ref === mainBranchCommitRef &&
-          element.branch === mainBranch
-      );
-      // eslint-disable-next-line no-console
-      console.log("Fetch main deploy:", deploy);
-
-      const rollback = await client.restoreSiteDeploy({
-        site_id: process.env.SITE_ID,
-        deploy_id: deploy.id,
+        deploy_id: process.env.DEPLOY_ID,
       });
 
       // eslint-disable-next-line no-console
-      console.log("rollback", rollback);
+      console.log("Preivew sitedeploy:", deploy);
 
       const response = await fetch(
         `https://api.github.com/repos/nathanvale/jazz-chord-app/statuses/${sha}`,
@@ -104,6 +84,22 @@ const config = {
         throw error;
       }
       return data;
+    } else {
+      await fetch(
+        `https://api.github.com/repos/nathanvale/jazz-chord-app/statuses/${sha}`,
+        {
+          method: "POST",
+          headers: {
+            authorization,
+          },
+          body: JSON.stringify({
+            state: "success",
+            target_url: deployURL,
+            context: "Cypress",
+            description: `Cypress tests passed.`,
+          }),
+        }
+      );
     }
   },
 };
