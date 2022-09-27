@@ -58,14 +58,14 @@ const config = {
       // Fetch sites
       const sites = await client.listSites();
       // eslint-disable-next-line no-console
-      console.log(sites);
+      console.log("Fetch sites:", sites);
 
       const rollback = await client.rollbackSiteDeploy({
         site_id: process.env.SITE_ID,
       });
 
       // eslint-disable-next-line no-console
-      console.log(rollback);
+      console.log("rollback", rollback);
 
       const response = await fetch(
         `https://api.github.com/repos/nathanvale/jazz-chord-app/statuses/${sha}`,
