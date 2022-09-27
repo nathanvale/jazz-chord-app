@@ -52,6 +52,18 @@ const config = {
       const authorization = `token ${netlifyConfig.build.environment.GITHUB_TOKEN}`;
       const deployURL = netlifyConfig.build.environment.DEPLOY_PRIME_URL;
 
+      // Fetch sites
+      const sites = await client.listSites();
+      // eslint-disable-next-line no-console
+      console.log(sites);
+
+      const rollback = client.rollbackSiteDeploy({
+        site_id: process.env.SITE_ID,
+      });
+
+      // eslint-disable-next-line no-console
+      console.log(rollback);
+
       const response = await fetch(
         `https://api.github.com/repos/nathanvale/jazz-chord-app/statuses/${sha}`,
         {
