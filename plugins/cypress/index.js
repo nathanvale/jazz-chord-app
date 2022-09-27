@@ -22,13 +22,13 @@ const config = {
       },
     });
 
-    const summary = [
-      "tests:",
-      `✅ ${result.totalPassed}`,
-      `🔥 ${result.totalFailed}`,
-      `⭕️ ${result.totalPending}`,
-      `🚫 ${result.totalSkipped}`,
-    ];
+    // const summary = [
+    //   "tests:",
+    //   `✅ ${result.totalPassed}`,
+    //   `🔥 ${result.totalFailed}`,
+    //   `⭕️ ${result.totalPending}`,
+    //   `🚫 ${result.totalSkipped}`,
+    // ];
 
     let text = `
       ✅ Passed tests: ${result.totalPassed}
@@ -40,11 +40,11 @@ const config = {
     // eslint-disable-next-line no-console
     console.log(text);
 
-    utils.status.show({
-      title: "cypress plugin",
-      summary: summary.join(" "),
-      text,
-    });
+    // utils.status.show({
+    //   title: "cypress plugin",
+    //   summary: summary.join(" "),
+    //   text,
+    // });
 
     const sha = utils.git.commits[0].sha;
     const authorization = `token ${netlifyConfig.build.environment.GITHUB_TOKEN}`;
