@@ -103,6 +103,9 @@ const config = {
       const data = await response.json();
       const { status, statusText, ok } = response;
 
+      // eslint-disable-next-line no-console
+      console.log("response", response);
+
       if (!ok) {
         const error = new Error(`${status} ${statusText}`);
         error.data = data;
