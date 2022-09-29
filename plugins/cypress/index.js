@@ -38,13 +38,16 @@ const setGitStatus = async function ({
 
 const config = {
   onPreBuild: async ({ netlifyConfig, utils }) => {
-    if (netlifyConfig.build.environment.CONTEXT === "deploy-preview") return;
-    await setGitStatus({
-      netlifyConfig,
-      utils,
-      description: `Cypress tests pending.`,
-      state: "pending",
-    });
+    // eslint-disable-next-line no-console
+    console.log("Context: ", netlifyConfig.build.environment.CONTEXT);
+    if (netlifyConfig.build.environment.CONTEXT === "deploy-preview") {
+      await setGitStatus({
+        netlifyConfig,
+        utils,
+        description: `Cypress tests pending.`,
+        state: "pending",
+      });
+    }
   },
 
   onSuccess: async ({ netlifyConfig, utils }) => {
