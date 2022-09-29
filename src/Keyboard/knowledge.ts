@@ -1,5 +1,6 @@
 // Note coordinates [octave, fifth] relative to C
-module.exports = {
+
+const knowledge = {
   notes: {
     c: [0, 0],
     d: [-1, 2],
@@ -180,3 +181,5 @@ module.exports = {
     AA8: "dai",
   },
 };
+
+export default knowledge;

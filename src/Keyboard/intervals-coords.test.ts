@@ -1,4 +1,4 @@
-import coords from "./intervals-coords";
+import coords from "./intervals-coords.js";
 
 it("should should correct interval for M12", () => {
   const result = coords("M12");

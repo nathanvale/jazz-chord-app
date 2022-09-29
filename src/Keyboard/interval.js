@@ -1,6 +1,6 @@
-var knowledge = require("./knowledge");
-var vector = require("./vector");
-var toCoord = require("./intervals-coords");
+import toCoord from "./intervals-coords.js";
+import knowledge from "./knowledge.ts";
+import vector from "./vector.js";
 
 function Interval(coord) {
   if (!(this instanceof Interval)) return new Interval(coord);
@@ -162,4 +162,4 @@ Interval.invert = function (sInterval) {
   return Interval.toCoord(sInterval).invert().toString();
 };
 
-module.exports = Interval;
+export default Interval;

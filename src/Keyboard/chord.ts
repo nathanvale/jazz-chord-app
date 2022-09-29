@@ -1,6 +1,7 @@
+/* eslint-disable no-console */
 import { IntervalVariant } from "./chords";
-import Interval from "./interval";
-import { Note } from "./note";
+import { default as Interval } from "./interval.js";
+import { Note } from "./note.js";
 
 export class Chord {
   private _rootNote: Note;
@@ -83,6 +84,7 @@ export function chord(
   voicing: IntervalVariant[]
 ) {
   let r, o;
+  console.log(Note);
   if (typeof root === "string") {
     r = root.match(/^([a-h])(x|#|bb|b?)/i);
     if (r && r[0]) {
