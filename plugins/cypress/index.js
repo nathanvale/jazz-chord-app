@@ -93,33 +93,29 @@ const config = {
     console.log("Deploy URL:", deploy.deploy_url);
 
     if (result.totalFailed > 0) {
-      if (netlifyConfig.build.environment.CONTEXT === "deploy-preview") {
-        const response = await setGitStatus({
-          netlifyConfig,
-          utils,
-          description: `${result.totalFailed} test(s) failed}`,
-          state: "failure",
-        });
+      const response = await setGitStatus({
+        netlifyConfig,
+        utils,
+        description: `${result.totalFailed} test(s) failed}`,
+        state: "failure",
+      });
 
-        const data = await response.json();
-        const { status, statusText, ok } = response;
+      const data = await response.json();
+      const { status, statusText, ok } = response;
 
-        if (!ok) {
-          const error = new Error(`${status} ${statusText}`);
-          error.data = data;
-          throw error;
-        }
-        return data;
+      if (!ok) {
+        const error = new Error(`${status} ${statusText}`);
+        error.data = data;
+        throw error;
       }
+      return data;
     } else {
-      if (netlifyConfig.build.environment.CONTEXT === "deploy-preview") {
-        await setGitStatus({
-          netlifyConfig,
-          utils,
-          description: `Tests passed.`,
-          state: "success",
-        });
-      }
+      await setGitStatus({
+        netlifyConfig,
+        utils,
+        description: `Tests passed.`,
+        state: "success",
+      });
     }
   },
 };
