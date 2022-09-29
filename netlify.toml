@@ -6,8 +6,5 @@ CYPRESS_CACHE_FOLDER = "./node_modules/.cache/CypressBinary"
 TERM = "xterm"
 
 [[plugins]]
-[[context.production.plugins]]
-  package="/plugins/cypress"
-
 [[context.deploy-preview.plugins]]
   package="/plugins/cypress"
