@@ -17,7 +17,6 @@ const setGitStatus = async function ({
   const sha = utils.git.commits[0].sha;
   const authorization = `token ${netlifyConfig.build.environment.GITHUB_TOKEN}`;
   const deployURL = netlifyConfig.build.environment.DEPLOY_PRIME_URL;
-
   const response = await fetch(
     `https://api.github.com/repos/nathanvale/jazz-chord-app/statuses/${sha}`,
     {
@@ -39,6 +38,7 @@ const setGitStatus = async function ({
 
 const config = {
   onPreBuild: async ({ netlifyConfig, utils }) => {
+    if (netlifyConfig.build.environment.CONTEXT === "deploy-preview") return;
     await setGitStatus({
       netlifyConfig,
       utils,
@@ -90,38 +90,33 @@ const config = {
     console.log("Deploy URL:", deploy.deploy_url);
 
     if (result.totalFailed > 0) {
-      const response = await setGitStatus({
-        netlifyConfig,
-        utils,
-        description: `${result.totalFailed} test(s) failed}`,
-        state: "failure",
-      });
+      if (netlifyConfig.build.environment.CONTEXT === "deploy-preview") {
+        const response = await setGitStatus({
+          netlifyConfig,
+          utils,
+          description: `${result.totalFailed} test(s) failed}`,
+          state: "failure",
+        });
 
-      const data = await response.json();
-      const { status, statusText, ok } = response;
+        const data = await response.json();
+        const { status, statusText, ok } = response;
 
-      if (!ok) {
-        const error = new Error(`${status} ${statusText}`);
-        error.data = data;
-        throw error;
+        if (!ok) {
+          const error = new Error(`${status} ${statusText}`);
+          error.data = data;
+          throw error;
+        }
+        return data;
       }
-      return data;
     } else {
-      const response = await setGitStatus({
-        netlifyConfig,
-        utils,
-        description: `Tests passed.`,
-        state: "success",
-      });
-      const data = await response.json();
-      const { status, statusText, ok } = response;
-
-      if (!ok) {
-        const error = new Error(`${status} ${statusText}`);
-        error.data = data;
-        throw error;
+      if (netlifyConfig.build.environment.CONTEXT === "deploy-preview") {
+        await setGitStatus({
+          netlifyConfig,
+          utils,
+          description: `Tests passed.`,
+          state: "success",
+        });
       }
-      return data;
     }
   },
 };
