@@ -7,4 +7,4 @@ TERM = "xterm"
 
 [[plugins]]
 [[context.deploy-preview.plugins]]
-  package="/plugins/cypress"
+package = "/plugins/cypress"
