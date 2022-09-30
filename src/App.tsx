@@ -7,8 +7,9 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  Redirect,
-  withRouter,
+  useNavigate,
+  Routes,
+  Navigate,
 } from "react-router-dom";
 
 import {
@@ -16,6 +17,29 @@ import {
   IdentityContextProvider,
 } from "react-netlify-identity";
 import { Login } from "./Login/Login";
+
+export type PrivateRouteProps = {
+  isAuthenticated: boolean;
+  authenticationPath: string;
+  outlet: JSX.Element;
+};
+
+const defaultProtectedRouteProps: Omit<PrivateRouteProps, "outlet"> = {
+  isAuthenticated: false,
+  authenticationPath: "/login",
+};
+
+function PrivateRoute({
+  isAuthenticated,
+  authenticationPath,
+  outlet,
+}: PrivateRouteProps) {
+  if (isAuthenticated) {
+    return outlet;
+  } else {
+    return <Navigate to={{ pathname: authenticationPath }} />;
+  }
+}
 
 function App() {
   const url = "https://www.nathanvale.com";
@@ -33,23 +57,34 @@ function App() {
               <Link to="/login">Login</Link>
             </li>
           </ul>
-          <Route exact path="/" component={Public} />
-          <Route path="/login" component={Login} />
-          <PrivateRoute path="/protected" component={Protected} />
         </div>
+        <Routes>
+          <Route path="/" element={<Public />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/protected"
+            element={
+              <PrivateRoute
+                {...defaultProtectedRouteProps}
+                outlet={<Protected />}
+              ></PrivateRoute>
+            }
+          />
+        </Routes>
       </Router>
     </IdentityContextProvider>
   );
 }
 
-const AuthButton = withRouter(({ history }) => {
+const AuthButton = () => {
+  const navigate = useNavigate();
   const { isLoggedIn, logoutUser } = useIdentityContext();
   return isLoggedIn ? (
     <p>
       Welcome!{" "}
       <button
         onClick={() => {
-          logoutUser().then((value) => history.push("/"));
+          logoutUser().then((value) => navigate("/"));
         }}
       >
         Sign out
@@ -58,27 +93,6 @@ const AuthButton = withRouter(({ history }) => {
   ) : (
     <p>You are not logged in.</p>
   );
-});
-
-function PrivateRoute({ component: Component, ...rest }: any) {
-  const { isLoggedIn } = useIdentityContext();
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isLoggedIn ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: props.location },
-            }}
-          />
-        )
-      }
-    />
-  );
-}
+};
 
 export default App;
