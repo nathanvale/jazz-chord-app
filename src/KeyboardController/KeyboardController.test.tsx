@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React from "react";
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import { KeyboardController } from "./KeyboardController";
@@ -42,7 +43,7 @@ function renderKeyboardController() {
   };
 }
 
-it("should have green left hand keys", () => {
+it.skip("should have green left hand keys", () => {
   const { leftHandActiveKeys, rightHandActiveKeys, selectChord, selectKey } =
     renderKeyboardController();
   selectChord("maj9");
@@ -57,7 +58,7 @@ it("should have green left hand keys", () => {
   });
 });
 
-it("should have all toggle button chords", () => {
+it.skip("should have all toggle button chords", () => {
   const { toggleButtonChords } = renderKeyboardController();
   let buttons = within(toggleButtonChords).getAllByRole("button");
   buttons.map((button, index) => {
@@ -66,7 +67,7 @@ it("should have all toggle button chords", () => {
   });
 });
 
-it("should have all toggle button keys", () => {
+it.skip("should have all toggle button keys", () => {
   const { toggleButtonKeys } = renderKeyboardController();
   let buttons = within(toggleButtonKeys).getAllByRole("button");
   buttons.map((button, index) => {
@@ -75,7 +76,7 @@ it("should have all toggle button keys", () => {
   });
 });
 
-it("should have disabled keys when no chord is selected", () => {
+it.skip("should have disabled keys when no chord is selected", () => {
   const { toggleButtonChords, toggleButtonKeys } = renderKeyboardController();
   let buttons = within(toggleButtonChords).getAllByRole("button");
   buttons.map((button) => {
@@ -87,7 +88,7 @@ it("should have disabled keys when no chord is selected", () => {
   });
 });
 
-it("should render chords with custom interval labels", () => {
+it.skip("should render chords with custom interval labels", () => {
   const { selectChord, selectKey, rightHandActiveKeys } =
     renderKeyboardController();
   selectChord("maj9Closed");
@@ -105,7 +106,7 @@ it("should render chords with custom interval labels", () => {
   expect(rightHandActiveKeys.getByText("P5")).toBeInTheDocument();
 });
 
-it("should toggle between chords", () => {
+it.skip("should toggle between chords", () => {
   const { selectChord, selectKey, leftHandActiveKeys, rightHandActiveKeys } =
     renderKeyboardController();
 
